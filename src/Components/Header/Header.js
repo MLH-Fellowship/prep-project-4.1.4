@@ -1,5 +1,5 @@
-import logo from "../../Images/mlh-prep.png";
 import './Header.css'
+import logo from "../../assets/images/mlh-prep.png";
 
 const Header = () => {
   return (

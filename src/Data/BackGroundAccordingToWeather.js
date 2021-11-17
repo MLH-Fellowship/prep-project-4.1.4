@@ -1,9 +1,9 @@
-import Clouds from "../Images/Backgrounds/Clouds.jpg";
-import Clear from "../Images/Backgrounds/Clear.jpg";
-import Smoke from "../Images/Backgrounds/Smoke.jpg";
-import Rain from "../Images/Backgrounds/Rain.jpg";
-import Haze from "../Images/Backgrounds/Haze.jpg";
-import Drizzle from "../Images/Backgrounds/drizzle.jpg";
+import Clouds from "../assets/images/backgrounds/Clouds.jpg";
+import Clear from "../assets/images/backgrounds/Clear.jpg";
+import Smoke from "../assets/images/backgrounds/Smoke.jpg";
+import Rain from "../assets/images/backgrounds/Rain.jpg";
+import Haze from "../assets/images/backgrounds/Haze.jpg";
+import Drizzle from "../assets/images/backgrounds/drizzle.jpg";
 
 const Background = {
   Clouds: {

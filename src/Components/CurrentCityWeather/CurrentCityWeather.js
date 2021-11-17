@@ -34,7 +34,6 @@ const CurrentCityWeather = () => {
           }
         },
         (error) => {
-          // setIsLoaded(true);
           setError(error);
         }
       )

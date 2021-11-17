@@ -9,8 +9,7 @@ const CurrentCityWeather = () => {
   const [city, setCity] = useState("New York City");
   const [results, setResults] = useState(null);
 
-  console.log(city);
-
+  
   useEffect(() => {
     fetch(
       "https://api.openweathermap.org/data/2.5/weather?q=" +

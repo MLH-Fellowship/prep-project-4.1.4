@@ -1,6 +1,6 @@
 import "./MainPage.css";
-import CurrentCityWeather from "../../Components/CurrentCityWeather/CurrentCityWeather";
-import Header from "../../Components/Header/Header";
+import CurrentCityWeather from "../../components/CurrentCityWeather/CurrentCityWeather";
+import Header from "../../components/Header/Header";
 
 const MainPage = () => {
   return (

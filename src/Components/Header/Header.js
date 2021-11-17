@@ -1,4 +1,4 @@
-import logo from "../../Images/mlh-prep.png";
+import logo from "../../assets/images/mlh-prep.png";
 
 const Header = () => {
   return (

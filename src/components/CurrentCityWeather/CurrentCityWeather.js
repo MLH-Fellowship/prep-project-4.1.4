@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef  } from "react";
 import "./CurrentCityWeather.css";
+import Autocomplete from "react-google-autocomplete";
 
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
@@ -40,11 +41,13 @@ const CurrentCityWeather = () => {
       <>
         <div>
           <h2>Enter a city below 👇</h2>
-          <input
-            type="text"
-            value={city}
-            onChange={(event) => setCity(event.target.value)}
-          />
+          <Autocomplete
+          apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+          onPlaceSelected={(place) => {
+            setCity(place.formatted_address)
+          }}
+          defaultValue={city}
+        />
           <div className="Results">
             {!isLoaded && <h2>Loading...</h2>}
             {isLoaded && results && (

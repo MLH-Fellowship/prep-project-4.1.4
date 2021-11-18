@@ -20,12 +20,12 @@ input {
 }
 
 
-@media (max-width:2589px) and (min-width:1440px)
+@media (max-width:2689px) and (min-width:1440px)
 {
   .Results {
     background-color: white;
-    margin-left: 550px;
-    margin-right: 550px;
+    margin-left: 600px;
+    margin-right: 600px;
     margin-top: 20px;
     border-radius: 8px;
     color: black;
@@ -37,8 +37,8 @@ input {
 {
   .Results {
     background-color: white;
-    margin-left: 280px;
-    margin-right: 280px;
+    margin-left: 290px;
+    margin-right: 290px;
     margin-top: 20px;
     border-radius: 8px;
     color: black;

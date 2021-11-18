@@ -121,6 +121,7 @@ const CurrentCityWeather = () => {
       </div>
     </>
   );
+
 };
 
 export default CurrentCityWeather;

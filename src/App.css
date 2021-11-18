@@ -19,14 +19,83 @@ input {
   width: 200px
 }
 
-.Results {
-  background-color: white;
-  margin-left: 150px;
-  margin-right: 150px;
-  margin-top: 20px;
-  border-radius: 8px;
-  color: black;
-  padding: 10px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+@media (max-width:2589px) and (min-width:1440px)
+{
+  .Results {
+    background-color: white;
+    margin-left: 550px;
+    margin-right: 550px;
+    margin-top: 20px;
+    border-radius: 8px;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}
+@media (max-width:1439px) and (min-width:1024px)
+{
+  .Results {
+    background-color: white;
+    margin-left: 280px;
+    margin-right: 280px;
+    margin-top: 20px;
+    border-radius: 8px;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}
+@media (max-width:1023px) and (min-width:738px)
+{
+  .Results {
+    background-color: white;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 20px;
+    border-radius: 8px;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}
+@media (max-width:737px) and (min-width:425px)
+{
+  .Results {
+    background-color: white;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 20px;
+    border-radius: 8px;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}
+@media (max-width:424px) and (min-width:375px)
+{
+  .Results {
+    background-color: white;
+    margin-left: 90px;
+    margin-right: 90px;
+    margin-top: 20px;
+    border-radius: 8px;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}
+@media (max-width:374px) and (min-width:0px)
+{
+  .Results {
+    background-color: white;
+    margin-left: 60px;
+    margin-right: 60px;
+    margin-top: 20px;
+    border-radius: 8px;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
 }
 

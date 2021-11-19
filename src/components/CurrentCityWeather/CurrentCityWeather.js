@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./CurrentCityWeather.css";
 import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
+import Map from "../../components/Map/Map";
 
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
@@ -9,7 +10,7 @@ const CurrentCityWeather = () => {
   const [city, setCity] = useState("New York City");
   const [results, setResults] = useState(null);
 
-  
+
   useEffect(() => {
     fetch(
       "https://api.openweathermap.org/data/2.5/weather?q=" +

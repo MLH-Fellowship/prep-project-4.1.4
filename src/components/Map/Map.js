@@ -19,24 +19,42 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const WMap = (props) => {
   const [position, setPosition] = useState({
-    lat: 51.958,
-    lng: 9.141,
-    zoom: 9
+    Lat: "",
+    Long: "",
+    zoom: 9,
+    City: ""
   });
+
+  useEffect(()=>{
+    setPosition({
+      Lat: props.Lat,
+      Long: props.Long,
+      zoom: 9,
+      City: props.City
+    })
+  },[props.Lat,props.Long]);
+
+  const changePosition = (e) =>{
+    console.log( "Check ", e.latlng);
+  }
 
   return (
     <>
     <div>
-      < MapContainer className= "map" center={[props.Lat, props.Long]} zoom={2}>
+      < MapContainer className= "map"
+      onclick = {changePosition}
+      center={[position.Lat, position.Long]}
+      zoom={2}
+      >
 
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
        />
 
-       <Marker position={[props.Lat, props.Long]}>
+     <Marker position={[position.Lat, position.Long]}>
       <Popup>
-        {props.City}
+        {position.City}
       </Popup>
     </Marker>
       </ MapContainer >

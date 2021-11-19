@@ -127,6 +127,15 @@ const CurrentCityWeather = () => {
     </>
   );
 
+  return {
+   city,
+   results,
+   isLoaded,
+   setCity,
+   setIsLoaded,
+   error,
+ };
+
 };
 
 export default CurrentCityWeather;

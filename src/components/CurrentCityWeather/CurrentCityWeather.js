@@ -9,7 +9,8 @@ const CurrentCityWeather = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [city, setCity] = useState("New York City");
   const [results, setResults] = useState(null);
-
+  const [lat, setLat] = useState("");
+  const [long, setLong] = useState("");
 
   useEffect(() => {
     fetch(
@@ -30,6 +31,8 @@ const CurrentCityWeather = () => {
             setIsLoaded(true);
             setError();
             setResults(result);
+            setLat(result.coord.lat);
+            setLong(result.coord.lon);
             console.log(result);
           }
         },
@@ -117,6 +120,7 @@ const CurrentCityWeather = () => {
                 </Col>
               </Row>
             </div>
+            <Map Lat={lat} Long = {long} City = {city}/>
           </div>
         )}
       </div>

@@ -8,7 +8,6 @@ const MainPage = () => {
     <>
       <Header />
       <CurrentCityWeather />
-      <WMap />
     </>
   );
 };

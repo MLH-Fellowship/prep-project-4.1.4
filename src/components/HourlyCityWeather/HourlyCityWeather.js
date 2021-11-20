@@ -3,11 +3,12 @@ import { Col, Row } from "react-bootstrap";
 import Carousel from 'react-bootstrap/Carousel';
 import './HourlyCityWeather.css';
 
-const HourlyCityWeather = () => {
+const HourlyCityWeather = ({city}) => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [city, setCity] = useState("Budapest");
     const [timeStamps, setTimeStamps] = useState(0);
+
+    console.log('City in child: ' + city);
 
     useEffect(() => {
         fetch(
@@ -38,7 +39,7 @@ const HourlyCityWeather = () => {
                 setError(err);
             });
 
-    }, [city]);
+    }, [city], []);
 
     function organizeForecast(result) {
         const hourlyForecasts = [];

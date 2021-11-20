@@ -117,7 +117,7 @@ const CurrentCityWeather = () => {
                 </Col>
               </Row>
               <Row>
-                <HourlyCityWeather />
+                <HourlyCityWeather city={city} />
               </Row>
             </div>
           </div>

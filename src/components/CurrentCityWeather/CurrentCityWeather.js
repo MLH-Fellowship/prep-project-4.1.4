@@ -45,6 +45,7 @@ const CurrentCityWeather = () => {
       });
   }, [city]);
 
+
   return (
     <>
       <div className="CurrentCityWeather">
@@ -120,21 +121,12 @@ const CurrentCityWeather = () => {
                 </Col>
               </Row>
             </div>
-            <Map Lat={lat} Long = {long} City = {city}/>
+            <Map Lat = {lat} Long = {long} City = {city} setCity = {setCity}/>
           </div>
         )}
       </div>
     </>
   );
-
-  return {
-   city,
-   results,
-   isLoaded,
-   setCity,
-   setIsLoaded,
-   error,
- };
 
 };
 

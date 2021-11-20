@@ -64,16 +64,58 @@ const HourlyCityWeather = () => {
         console.log(dailyForecasts);
     }
 
+    const days = { 0 : 'Sun', 1 : 'Mon', 2 : 'Tue', 3 : 'Wed', 4 : 'Thu', 5 : 'Fri', 6 : 'Sat' };
     function getWeekday(time) {
         var today = new Date();
         var forecastDate = new Date(time);
-        var days = { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' };
-
         if (forecastDate.getDate() === today.getDate()) {
             return 'Today';
         }
         return days[forecastDate.getDay()];
     }
+
+    const Emoji = props => (
+        <span
+          className="emoji"
+          role="img"
+          aria-label={props.label ? props.label : ""}
+          aria-hidden={props.label ? "false" : "true"}
+        >
+          {props.symbol}
+        </span>
+      )
+
+    const nightEmojis = {
+        'Clouds' : <h3><Emoji label="cloud" symbol="☁️"/></h3>,
+        'Clear' : <h3><Emoji label="clear" symbol="🌙"/></h3>,
+        'Smoke' : <h3><Emoji label="smoke" symbol="🌫️"/></h3>,
+        'Rain' : <h3><Emoji label="rain" symbol="💧"/></h3>,
+        'Haze' : <h3><Emoji label="haze" symbol="🌫️"/></h3>,
+        'Drizzle' : <h3><Emoji label="drizzle" symbol="🌧️"/></h3>,
+        'Snow' : <h3><Emoji label="snow" symbol="❄️"/></h3>
+    }
+
+    const dayEmojis = {
+        'Clouds' : <h3><Emoji label="cloud" symbol="🌥️"/></h3>,
+        'Clear' : <h3><Emoji label="sun" symbol="☀️"/></h3>,
+        'Smoke' : <h3><Emoji label="smoke" symbol="🌫️"/></h3>,
+        'Rain' : <h3><Emoji label="rain" symbol="💧"/></h3>,
+        'Haze' : <h3><Emoji label="haze" symbol="🌫️"/></h3>,
+        'Drizzle' : <h3><Emoji label="drizzle" symbol="🌧️"/></h3>,
+        'Snow' : <h3><Emoji label="snow" symbol="❄️"/></h3>
+    }
+
+      function ChooseEmoji(props) {
+        if(isNight(props.time)) {
+            return nightEmojis[props.weather];
+        }
+        return dayEmojis[props.weather];
+      }
+
+      function isNight(time) {
+        var times = { '06:00' : false, '09:00' : false, '12:00' : false, '15:00' : false, '18:00' : false, '21:00' : true, '00:00' : true, '03:00' : true};
+        return times[time];
+      }
 
     return (
         <>
@@ -84,22 +126,23 @@ const HourlyCityWeather = () => {
             )}
             {isLoaded && !error && timeStamps && (
                 <div>
-                    <Carousel >
-                        {timeStamps.map((item, i) => (
+                    <Carousel>
+                        {timeStamps.map((dailyForecast, i) => (
                             <Carousel.Item key={i}>
                                 <br></br>
                                 <Row>
-                                    {item.map((time, j) =>
+                                    {dailyForecast.map((hourlyForcast, j) =>
                                     (
                                         <Col className="carousel-column" key={j}>
                                             <p className="week-day">
-                                                {time.day}
+                                                {hourlyForcast.day}
                                             </p>
                                             <p className="hour">
-                                                {time.time}
+                                                {hourlyForcast.time}
                                             </p>
+                                            <ChooseEmoji weather={hourlyForcast.icon} time={hourlyForcast.time}/>
                                             <p className="temperature">
-                                                {time.temperature}
+                                                {hourlyForcast.temperature}
                                                 <sup>°C</sup>
                                             </p>
                                         </Col>

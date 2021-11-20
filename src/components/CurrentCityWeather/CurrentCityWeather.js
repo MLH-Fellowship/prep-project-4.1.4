@@ -9,6 +9,7 @@ const CurrentCityWeather = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
   const [results, setResults] = useState(null);
+  const [city, setCity] = useState('New York');
 
   
   useEffect(() => {
@@ -51,6 +52,11 @@ const CurrentCityWeather = () => {
     setCityCoordinates(coordinates);
   }
 
+  function getCity(address) {
+    var addressComponents = address.split(",");
+    setCity(addressComponents[0]);
+  }
+
   return (
     <>
       <div className="CurrentCityWeather">
@@ -59,6 +65,7 @@ const CurrentCityWeather = () => {
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
           onPlaceSelected={(place) => {
             setCoordinates(place);
+            getCity(place.formatted_address);
           }}
           defaultValue={"New York, NY, USA"}
           className="inputCity"
@@ -90,7 +97,7 @@ const CurrentCityWeather = () => {
                   </div>
                   <i>
                     <div>
-                      {results.name}, {results.sys.country}
+                      {city}, {results.sys.country}
                     </div>
                   </i>
                 </Col>

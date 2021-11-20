@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./CurrentCityWeather.css";
 import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
+import HourlyCityWeather from "../HourlyCityWeather/HourlyCityWeather";
 
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
@@ -114,6 +115,9 @@ const CurrentCityWeather = () => {
                     </Col>
                   </Row>
                 </Col>
+              </Row>
+              <Row>
+                <HourlyCityWeather />
               </Row>
             </div>
           </div>

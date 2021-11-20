@@ -7,14 +7,16 @@ import { Col, Row } from "react-bootstrap";
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [city, setCity] = useState("New York City");
+  const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
   const [results, setResults] = useState(null);
 
   
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?q=" +
-        city +
+      "https://api.openweathermap.org/data/2.5/weather?lat=" +
+        cityCoordinates.lat +
+        "&lon=" +
+        cityCoordinates.lon +
         "&units=metric" +
         "&appid=" +
         process.env.REACT_APP_APIKEY
@@ -40,7 +42,14 @@ const CurrentCityWeather = () => {
       .catch((err) => {
         setError(err);
       });
-  }, [city]);
+  }, [cityCoordinates]);
+
+  function setCoordinates(place) {
+    var latitude = place.geometry.location.lat();
+    var longitude = place.geometry.location.lng();
+    var coordinates = {lat: latitude, lon: longitude};
+    setCityCoordinates(coordinates);
+  }
 
   return (
     <>
@@ -49,9 +58,9 @@ const CurrentCityWeather = () => {
         <Autocomplete
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
           onPlaceSelected={(place) => {
-            setCity(place.formatted_address)
+            setCoordinates(place);
           }}
-          defaultValue={city}
+          defaultValue={"New York, NY, USA"}
           className="inputCity"
         />
         {error && (
@@ -59,7 +68,7 @@ const CurrentCityWeather = () => {
             <h2 className="px-3">Error: {error.message}</h2>
           </div>
         )}
-        {city && !error && !isLoaded && (
+        {cityCoordinates && !error && !isLoaded && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Loading...</h2>
           </div>

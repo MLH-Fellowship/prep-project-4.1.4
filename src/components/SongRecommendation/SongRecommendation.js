@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { Col, ListGroupItem, Row } from "react-bootstrap";
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const SongRecommendation = (props) => {
 
-    // var clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-    // var clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
+    const dummyData = [{ song: 'Already missing you', artist: 'Selena Gomez' }, { song: 'Levetating', artist: 'Dua Lipa' }, { song: 'Despacito', artist: 'JB' }, { song: 'Perfect', artist: 'Ed Shereen' }, { song: 'Photograph', artist: 'Ed Shereen' }];
+
     const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/playlists/";
     const ACCESS_TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
-    const [accessToken, setAccessToken] = useState('');
+    const [accessToken, setAccessToken] = useState(null);
     var playlistId = '';
     // eslint-disable-next-line no-lone-blocks
     {
@@ -27,25 +29,27 @@ const SongRecommendation = (props) => {
                             }
     };
 
-    useEffect(() => {
-        const _getToken = async () => {
+    const _getToken = async () => {
 
-            const result = await fetch(ACCESS_TOKEN_ENDPOINT, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': 'Basic ' + Buffer.from(process.env.REACT_APP_SPOTIFY_CLIENT_ID + ':' + process.env.REACT_APP_SPOTIFY_CLIENT_SECRET, 'utf8').toString('base64')
-                },
-                body: 'grant_type=client_credentials'
-            });
-
-            const data = await result.json();
+        await fetch(ACCESS_TOKEN_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + Buffer.from(process.env.REACT_APP_SPOTIFY_CLIENT_ID + ':' + process.env.REACT_APP_SPOTIFY_CLIENT_SECRET, 'utf8').toString('base64')
+            },
+            body: 'grant_type=client_credentials'
+        }).then((result) => result.json()).then((data) => {
             setAccessToken(data.access_token);
-            // console.log(data.access_token);
+            console.log(data.access_token);
             console.log(accessToken);
         }
-        _getToken();
+        ).catch((error) => { console.log(error); });
 
+    }
+
+    useEffect(() => {
+
+        _getToken();
         const handleGetPlaylists = () => {
             axios
                 .get(PLAYLISTS_ENDPOINT + playlistId, {
@@ -54,20 +58,34 @@ const SongRecommendation = (props) => {
                     },
                 })
                 .then((response) => {
-                    // console.log(response.data);
+                    console.log("PLAYLIST##########:" + response.data);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         };
         handleGetPlaylists();
-    }, [playlistId]);
+    }, []);
 
     return (
         <>
             <div className="Recommended Songs">
                 <h2 className="Catchy Header">Listen Songs That Match Your Mood!</h2>
-
+                <ListGroup>
+                    {
+                        dummyData.map((singleData) =>
+                            <ListGroupItem>
+                                <Row>
+                                    <img src='src\assets\images\mlh-prep.png' alt='Cover Page of Song' />
+                                    <Col>
+                                        <h4>{singleData.song}</h4>
+                                        <h5>{singleData.artist}</h5>
+                                    </Col>
+                                </Row>
+                            </ListGroupItem>
+                        )
+                    }
+                </ListGroup>
 
             </div>
 

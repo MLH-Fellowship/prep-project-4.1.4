@@ -12,14 +12,17 @@ const CurrentCityWeather = () => {
   const [results, setResults] = useState(null);
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
+  const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
 
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?q=" +
-        city +
-        "&units=metric" +
-        "&appid=" +
-        process.env.REACT_APP_APIKEY
+      "https://api.openweathermap.org/data/2.5/weather?lat=" +
+          cityCoordinates.lat +
+          "&lon=" +
+          cityCoordinates.lon +
+          "&units=metric" +
+          "&appid=" +
+          process.env.REACT_APP_APIKEY
     )
       .then((res) => res.json())
       .then(
@@ -31,8 +34,10 @@ const CurrentCityWeather = () => {
             setIsLoaded(true);
             setError();
             setResults(result);
+            console.log(result.name);
             setLat(result.coord.lat);
             setLong(result.coord.lon);
+            setCity(result.name + ", " + result.sys.country)
           }
         },
         (error) => {
@@ -42,19 +47,34 @@ const CurrentCityWeather = () => {
       .catch((err) => {
         setError(err);
       });
-  }, [city]);
+  },[cityCoordinates],[]);
+
+
+  function setCoordinates(place) {
+    var latitude = place.geometry.location.lat();
+    var longitude = place.geometry.location.lng();
+    var coordinates = {lat: latitude, lon: longitude};
+    setCityCoordinates(coordinates);
+  }
+
+  function getCity(address) {
+    var addressComponents = address.split(",");
+    console.log("city ", addressComponents[0]);
+    setCity(addressComponents[0]);
+  }
 
 
   return (
     <>
       <div className="CurrentCityWeather">
         <h2 className="pb-4">Enter a city below 👇</h2>
-        <Autocomplete
+          <Autocomplete
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
           onPlaceSelected={(place) => {
-            setCity(place.formatted_address)
+            setCoordinates(place);
+            getCity(place.formatted_address);
           }}
-          defaultValue={city}
+          Value={city}
           className="inputCity"
         />
         {error && (
@@ -122,7 +142,7 @@ const CurrentCityWeather = () => {
                 </Col>
               </Row>
             </div>
-            <Map Lat = {lat} Long = {long} City = {city} setCity = {setCity}/>
+            <Map city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}/>
           </div>
         )}
       </div>

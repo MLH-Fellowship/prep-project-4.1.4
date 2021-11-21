@@ -7,7 +7,6 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup ,useMapEvent} from 'react-leaflet';
 import "./Map.css";
 import 'leaflet/dist/leaflet.css';
-import LCG from 'leaflet-control-geocoder';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -19,36 +18,27 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 
-const PlaceMarker = ({lat,long,city,setCity,map,setMap}) =>{
- const [center,setCenter] = useState([lat,long]);
- // const geocoder = L.Control.Geocoder.nominatim();
-
-  useEffect(()=>{
-    setCenter([lat,long])
-  },[lat,long]);
+const PlaceMarker = ({ city ,setCity, cityCoordinates, setCityCoordinates, map, setMap}) =>{
 
   useMapEvent("click", (e) => {
     console.log(e.latlng);
     fetch(
-     `https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng.lat}&lon=${e.latlng.lng}&appid=${process.env.REACT_APP_APIKEY}`
-   )
-     .then((res) => res.json())
-     .then(
-       (result) => {
-         console.log("pppp");
-         console.log("this" ,result);
-         setCenter([e.latlng.lat,e.latlng.lng]);
-         setCity(result.name);
-       },
-       (error) => {
-         // setIsLoaded(true);
-         window.alert(error);
-       }
-     );
+      `https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng.lat}&lon=${e.latlng.lng}&appid=${process.env.REACT_APP_APIKEY}`
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setCityCoordinates({lat : e.latlng.lat,lon : e.latlng.lng});
+          setCity(result.name);
+        },
+        (error) => {
+          window.alert("Location not found")
+        }
+      );
   });
 
   return(
-  <Marker position={center}>
+  <Marker position={[cityCoordinates.lat,cityCoordinates.lon]}>
    <Popup>
      {city}
    </Popup>
@@ -56,7 +46,7 @@ const PlaceMarker = ({lat,long,city,setCity,map,setMap}) =>{
 );
 }
 
-const WMap = (props) => {
+const WMap = ({ city ,setCity, cityCoordinates, setCityCoordinates}) => {
   const [map, setMap] = useState(null);
   const [position, setPosition] = useState({
     Lat: "",
@@ -67,16 +57,18 @@ const WMap = (props) => {
 
   useEffect(()=>{
     setPosition({
-      Lat: props.Lat,
-      Long: props.Long,
+      Lat: cityCoordinates.lat,
+      Long: cityCoordinates.lon,
       zoom: 9,
-      City: props.City
+      City: city
     })
-  },[props.Lat,props.Long]);
+  },[cityCoordinates]);
 
   useEffect(()=>{
     setMap(map)
   },[map])
+
+
   return (
     <>
     <div>
@@ -94,10 +86,7 @@ const WMap = (props) => {
 
 
      <PlaceMarker
-       lat={position.Lat}
-       long = {position.Long}
-       city = {position.City}
-       setCity = {props.setCity}
+       city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}
        map = {map}
        setMap = {setMap}
        />

@@ -20,9 +20,8 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 
 const PlaceMarker = ({lat,long,city,setCity,map,setMap}) =>{
- console.log("cc ",map);
  const [center,setCenter] = useState([lat,long]);
- const geocoder = L.Control.Geocoder.nominatim();
+ // const geocoder = L.Control.Geocoder.nominatim();
 
   useEffect(()=>{
     setCenter([lat,long])
@@ -30,20 +29,22 @@ const PlaceMarker = ({lat,long,city,setCity,map,setMap}) =>{
 
   useMapEvent("click", (e) => {
     console.log(e.latlng);
-    geocoder.reverse(
-      e.latlng,
-      map.options.crs.scale(map.getZoom()),
-      (results) => {
-        if(results.length>0){
-          console.log("Hello ", results[0].name);
-          setCity(results[0].name);
-          setCenter([e.latlng.lat,e.latlng.lng]);
-        }
-        else{
-          window.alert("Location not found");
-        }
-      }
-    );
+    fetch(
+     `https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng.lat}&lon=${e.latlng.lng}&appid=${process.env.REACT_APP_APIKEY}`
+   )
+     .then((res) => res.json())
+     .then(
+       (result) => {
+         console.log("pppp");
+         console.log("this" ,result);
+         setCenter([e.latlng.lat,e.latlng.lng]);
+         setCity(result.name);
+       },
+       (error) => {
+         // setIsLoaded(true);
+         window.alert(error);
+       }
+     );
   });
 
   return(
@@ -107,3 +108,18 @@ const WMap = (props) => {
   );
 }
 export default WMap;
+
+    // geocoder.reverse(
+    //   e.latlng,
+    //   map.options.crs.scale(map.getZoom()),
+    //   (results) => {
+    //     if(results.length>0){
+    //       console.log("Hello ", results[0].name);
+    //       setCity(results[0].name);
+    //       setCenter([e.latlng.lat,e.latlng.lng]);
+    //     }
+    //     else{
+    //       window.alert("Location not found");
+    //     }
+    //   }
+    // );

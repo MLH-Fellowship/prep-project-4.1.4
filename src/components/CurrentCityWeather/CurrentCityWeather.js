@@ -23,7 +23,6 @@ const CurrentCityWeather = () => {
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
           if (result["cod"] !== 200) {
             setIsLoaded(true);
             setError(result);
@@ -33,7 +32,6 @@ const CurrentCityWeather = () => {
             setResults(result);
             setLat(result.coord.lat);
             setLong(result.coord.lon);
-            console.log(result);
           }
         },
         (error) => {

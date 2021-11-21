@@ -8,7 +8,6 @@ const HourlyCityWeather = ({city}) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [timeStamps, setTimeStamps] = useState(0);
 
-    console.log('City in child: ' + city);
 
     useEffect(() => {
         fetch(
@@ -62,7 +61,6 @@ const HourlyCityWeather = ({city}) => {
         }
 
         setTimeStamps(dailyForecasts);
-        console.log(dailyForecasts);
     }
 
     const days = { 0 : 'Sun', 1 : 'Mon', 2 : 'Tue', 3 : 'Wed', 4 : 'Thu', 5 : 'Fri', 6 : 'Sat' };
@@ -114,7 +112,16 @@ const HourlyCityWeather = ({city}) => {
       }
 
       function isNight(time) {
-        var times = { '06:00' : false, '09:00' : false, '12:00' : false, '15:00' : false, '18:00' : false, '21:00' : true, '00:00' : true, '03:00' : true};
+        var times = { 
+            '06:00' : false, 
+            '09:00' : false, 
+            '12:00' : false, 
+            '15:00' : false, 
+            '18:00' : false, 
+            '21:00' : true, 
+            '00:00' : true, 
+            '03:00' : true
+        };
         return times[time];
       }
 

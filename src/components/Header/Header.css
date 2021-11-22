@@ -1,0 +1,15 @@
+.MLHHeader {
+  padding: 20px;
+  border-bottom: 2px solid #888;
+  background-color: #133667;
+}
+.logo {
+  margin: 0 auto;
+  width: 250px;
+}
+
+@media only screen and (max-width: 350px) {
+  .logo {
+    width: 200px;
+  }
+}

@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+.CurrentCityWeather {
+  margin-top: 20px;
+}
+.WeatherResultsLoading {
+  width: 500px;
+  padding: 30px 10px;
+  background: #133667;
+  color: #fff;
+  margin: 30px auto;
+  border-radius: 8px;
+}
+.inputCity {
+  width: 300px;
+  text-align: center;
+}
+.inputCity:focus {
+  /* outline: none; */
+  outline: 2px solid #133667;
+}
+.WeatherResults {
+  width: 600px;
+  margin: 30px auto;
+  color: #000;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.23);
+}
+.InnerWeatherResults {
+  padding: 30px 10px;
+  border-radius: 8px;
+  background-color: rgba(225, 225, 225, 0.4);
+}
+.CurrentActualTemp {
+  font-size: 3rem;
+  font-weight: 600;
+  padding-left: 25px;
+}
+.CurrentActualTemp sup {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #333;
+}
+.CurrentActualWeather {
+  font-size: 2rem;
+  color: #133667;
+  font-weight: 500;
+  font-family: "Roboto Slab", serif;
+}
+.minmaxTempHeading {
+  font-size: 1.2rem;
+  font-family: "Roboto Slab", serif;
+  font-weight: 300;
+  padding-right: 10px;
+}
+.minmaxTemp {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.minmaxTemp sup {
+  font-size: 1rem;
+  color: #333;
+}
+.currentTempDetails {
+  font-size: 1.1rem;
+  text-align: center;
+  font-family: "Roboto Slab", serif;
+}
+.currentTempDetails span {
+  font-weight: 500;
+}
+.currentTempDetails sub {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+@media only screen and (max-width: 700px) {
+  .WeatherResults {
+    width: 90%;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .CurrentActualTemp {
+    font-size: 2.5rem;
+    padding-left: 15px;
+  }
+  .CurrentActualTemp sup {
+    font-size: 1.5rem;
+  }
+  .CurrentActualWeather {
+    font-size: 1.5rem;
+  }
+  .minmaxTempHeading {
+    font-size: 1rem;
+  }
+  .minmaxTemp {
+    font-size: 1.2rem;
+  }
+  .minmaxTemp sup {
+    font-size: 0.9rem;
+  }
+  .currentTempDetails {
+    font-size: 1rem;
+  }
+  .InnerWeatherResults {
+    padding: 10px 0px;
+  }
+
+}

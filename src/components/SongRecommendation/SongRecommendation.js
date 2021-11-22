@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import axios from 'axios';
+import { useState, useEffect } from "react";
 import { Col, ListGroupItem, Row } from "react-bootstrap";
 import ListGroup from 'react-bootstrap/ListGroup';
+import "./SongRecommendation.css";
 
 const SongRecommendation = (props) => {
 
@@ -9,7 +9,7 @@ const SongRecommendation = (props) => {
     const ACCESS_TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
     var accessToken = '';
     var playlistId = '';
-    var tracksData = [];
+    const [tracksData, setTracksData] = useState(null);
     // eslint-disable-next-line no-lone-blocks
     {
         if (props.options.weather[0].main === 'Clear') { playlistId = "2Ub0SnonpnLgiWP9LQs5kO" }
@@ -35,8 +35,10 @@ const SongRecommendation = (props) => {
             .then((result) => result.json()).then((response) => {
                 console.log(response);
                 var tracks = response.items;
+                var tempTracksData = [];
                 for (let i = 0; i < tracks.length; i++)
-                    tracksData.push({ 'song': tracks[i].track.name, 'artist': tracks[i].track.artists[0].name, 'imageUrl': tracks[i].track.album.images[0].url });
+                    tempTracksData.push({ 'song': tracks[i].track.name, 'artist': tracks[i].track.artists[0].name, 'imageUrl': tracks[i].track.album.images[0].url });
+                setTracksData(tempTracksData);
                 console.log(tracksData[0].song);
             })
             .catch((error) => {
@@ -63,18 +65,18 @@ const SongRecommendation = (props) => {
 
         }
         _getToken()
-    }, []);
+    }, [tracksData]);
 
     return (
         <>
             <div className="Recommended Songs">
                 <h2 className="Catchy Header">Listen Songs That Match Your Mood!</h2>
                 <ListGroup>
-                    {tracksData.length !== 0 &&
+                    {tracksData &&
                         tracksData.map((singleTrack) =>
                             <ListGroupItem>
                                 <Row>
-                                    <img src={singleTrack.imageUrl} alt='Cover Page of Song' />
+                                    <img src={singleTrack.imageUrl} alt='Cover Page of Song' className="songImage" />
                                     <Col>
                                         <h4>{singleTrack.song}</h4>
                                         <h5>{singleTrack.artist}</h5>

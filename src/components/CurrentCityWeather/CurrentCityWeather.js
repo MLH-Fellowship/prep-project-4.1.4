@@ -49,20 +49,14 @@ const CurrentCityWeather = () => {
     <>
       <div className="CurrentCityWeather">
         <h2 className="pb-4">Enter a city below 👇</h2>
-        <input
-          type="text"
-          value={city}
-          className="inputCity"
-          onChange={(event) => setCity(event.target.value)}
-        />
-        {/*<Autocomplete
+        <Autocomplete
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
           onPlaceSelected={(place) => {
             setCity(place.formatted_address)
           }}
           defaultValue={city}
           className="inputCity"
-        />*/}
+        />
         {error && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Error: {error.message}</h2>

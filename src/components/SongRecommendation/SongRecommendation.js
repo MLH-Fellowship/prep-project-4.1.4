@@ -9,7 +9,7 @@ const SongRecommendation = (props) => {
 
     const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/playlists/";
     const ACCESS_TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
-    const [accessToken, setAccessToken] = useState(null);
+    var accessToken = '';
     var playlistId = '';
     // eslint-disable-next-line no-lone-blocks
     {
@@ -29,42 +29,38 @@ const SongRecommendation = (props) => {
                             }
     };
 
-    const _getToken = async () => {
-
-        await fetch(ACCESS_TOKEN_ENDPOINT, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + Buffer.from(process.env.REACT_APP_SPOTIFY_CLIENT_ID + ':' + process.env.REACT_APP_SPOTIFY_CLIENT_SECRET, 'utf8').toString('base64')
-            },
-            body: 'grant_type=client_credentials'
-        }).then((result) => result.json()).then((data) => {
-            setAccessToken(data.access_token);
-            console.log(data.access_token);
-            console.log(accessToken);
-        }
-        ).catch((error) => { console.log(error); });
-
-    }
+    const handleGetPlaylists = () => {
+        axios
+            .get(PLAYLISTS_ENDPOINT + playlistId + '/tracks?limit=10',
+                { headers: { "Authorization": `Bearer ${accessToken}` } }
+            )
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     useEffect(() => {
+        const _getToken = async () => {
 
-        _getToken();
-        const handleGetPlaylists = () => {
-            axios
-                .get(PLAYLISTS_ENDPOINT + playlistId, {
-                    headers: {
-                        Authorization: "Bearer " + accessToken,
-                    },
-                })
-                .then((response) => {
-                    console.log("PLAYLIST##########:" + response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
-        handleGetPlaylists();
+            await fetch(ACCESS_TOKEN_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + Buffer.from(process.env.REACT_APP_SPOTIFY_CLIENT_ID + ':' + process.env.REACT_APP_SPOTIFY_CLIENT_SECRET, 'utf8').toString('base64')
+                },
+                body: 'grant_type=client_credentials'
+            }).then((result) => result.json()).then((data) => {
+                accessToken = data.access_token
+                console.log(accessToken);
+                handleGetPlaylists()
+            }
+            ).catch((error) => { console.log(error); });
+
+        }
+        _getToken()
     }, []);
 
     return (
@@ -76,7 +72,7 @@ const SongRecommendation = (props) => {
                         dummyData.map((singleData) =>
                             <ListGroupItem>
                                 <Row>
-                                    <img src='src\assets\images\mlh-prep.png' alt='Cover Page of Song' />
+                                    <img src='' alt='Cover Page of Song' />
                                     <Col>
                                         <h4>{singleData.song}</h4>
                                         <h5>{singleData.artist}</h5>

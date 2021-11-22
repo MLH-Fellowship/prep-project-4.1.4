@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import './App.css';
-import logo from './mlh-prep.png'
+import logo from './sound_forecast.png'
 
 function App() {
   const [error, setError] = useState(null);
@@ -31,7 +31,7 @@ function App() {
     return <div>Error: {error.message}</div>;
   } else {
     return <>
-      <img className="logo" src={logo} alt="MLH Prep Logo"></img>
+      <img className="logo" src={logo} alt="SOUND FORECAST"></img>
       <div>
         <h2>Enter a city below 👇</h2>
         <input

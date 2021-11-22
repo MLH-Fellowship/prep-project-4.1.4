@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from 'axios';
 import { Col, ListGroupItem, Row } from "react-bootstrap";
 import ListGroup from 'react-bootstrap/ListGroup';
 
 const SongRecommendation = (props) => {
 
-    const dummyData = [{ song: 'Already missing you', artist: 'Selena Gomez' }, { song: 'Levetating', artist: 'Dua Lipa' }, { song: 'Despacito', artist: 'JB' }, { song: 'Perfect', artist: 'Ed Shereen' }, { song: 'Photograph', artist: 'Ed Shereen' }];
-
     const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/playlists/";
     const ACCESS_TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
     var accessToken = '';
     var playlistId = '';
+    var tracksData = [];
     // eslint-disable-next-line no-lone-blocks
     {
         if (props.options.weather[0].main === 'Clear') { playlistId = "2Ub0SnonpnLgiWP9LQs5kO" }
@@ -29,13 +28,16 @@ const SongRecommendation = (props) => {
                             }
     };
 
-    const handleGetPlaylists = () => {
-        axios
-            .get(PLAYLISTS_ENDPOINT + playlistId + '/tracks?limit=10',
-                { headers: { "Authorization": `Bearer ${accessToken}` } }
-            )
-            .then((response) => {
-                console.log(response.data)
+    const handleGetPlaylists = async () => {
+        await fetch(PLAYLISTS_ENDPOINT + playlistId + '/tracks?limit=10',
+            { method: 'GET', headers: { "Authorization": `Bearer ${accessToken}` }, }
+        )
+            .then((result) => result.json()).then((response) => {
+                console.log(response);
+                var tracks = response.items;
+                for (let i = 0; i < tracks.length; i++)
+                    tracksData.push({ 'song': tracks[i].track.name, 'artist': tracks[i].track.artists[0].name, 'imageUrl': tracks[i].track.album.images[0].url });
+                console.log(tracksData[0].song);
             })
             .catch((error) => {
                 console.log(error);
@@ -53,9 +55,9 @@ const SongRecommendation = (props) => {
                 },
                 body: 'grant_type=client_credentials'
             }).then((result) => result.json()).then((data) => {
-                accessToken = data.access_token
+                accessToken = data.access_token;
                 console.log(accessToken);
-                handleGetPlaylists()
+                handleGetPlaylists();
             }
             ).catch((error) => { console.log(error); });
 
@@ -68,14 +70,14 @@ const SongRecommendation = (props) => {
             <div className="Recommended Songs">
                 <h2 className="Catchy Header">Listen Songs That Match Your Mood!</h2>
                 <ListGroup>
-                    {
-                        dummyData.map((singleData) =>
+                    {tracksData.length !== 0 &&
+                        tracksData.map((singleTrack) =>
                             <ListGroupItem>
                                 <Row>
-                                    <img src='' alt='Cover Page of Song' />
+                                    <img src={singleTrack.imageUrl} alt='Cover Page of Song' />
                                     <Col>
-                                        <h4>{singleData.song}</h4>
-                                        <h5>{singleData.artist}</h5>
+                                        <h4>{singleTrack.song}</h4>
+                                        <h5>{singleTrack.artist}</h5>
                                     </Col>
                                 </Row>
                             </ListGroupItem>

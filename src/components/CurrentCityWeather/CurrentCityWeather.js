@@ -78,6 +78,7 @@ const CurrentCityWeather = () => {
               setCity(place.formatted_address)
             }}
             defaultValue={city}
+            value={city}
             className="inputCity"
           />
           {browserSupportsSpeechRecognition && (

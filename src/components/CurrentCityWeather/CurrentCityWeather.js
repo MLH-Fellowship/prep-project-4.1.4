@@ -1,9 +1,11 @@
-import { useEffect, useState, useRef  } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
 import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMicrophone, faMicrophoneSlash, faCircle } from '@fortawesome/free-solid-svg-icons'
 
 const CurrentCityWeather = () => {
 
@@ -11,6 +13,12 @@ const CurrentCityWeather = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [city, setCity] = useState("New York City");
   const [results, setResults] = useState(null);
+
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
 
 
   useEffect(() => {
@@ -44,15 +52,18 @@ const CurrentCityWeather = () => {
       });
   }, [city]);
 
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition();
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
+  useEffect(() => {
+    console.log(transcript)
+    setCity(transcript)
+  }, [transcript])
+
+  function handleMicrophone() {
+    if (listening) {
+      SpeechRecognition.stopListening()
+    } else {
+      SpeechRecognition.startListening()
+    }
   }
 
 
@@ -60,18 +71,28 @@ const CurrentCityWeather = () => {
     <>
       <div className="CurrentCityWeather">
         <h2 className="pb-4">Enter a city below 👇</h2>
-        <Autocomplete
-          apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-          onPlaceSelected={(place) => {
-            setCity(place.formatted_address)
-          }}
-          defaultValue={city}
-          className="inputCity"
-        />
-        <div>
-          <p>Microphone: {listening ? 'on' : 'off'}</p>
-          <button onClick={SpeechRecognition.startListening}>Start</button>
-          <button onClick={SpeechRecognition.stopListening}>Stop</button>
+        <div className='input-ctn'>
+          {/**<input
+            type="text"
+            value={city}
+            defaultValue={city}
+            className="inputCity"
+            onChange={(event) => setCity(event.target.value)}
+          />**/}
+          <Autocomplete
+            apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+            onPlaceSelected={(place) => {
+              setCity(place.formatted_address)
+            }}
+            defaultValue={city}
+            className="inputCity"
+          />
+          {browserSupportsSpeechRecognition && (
+            <div className='voice-ctn'>
+              <div
+                className='microphone-icon'
+                onClick={handleMicrophone}>{listening ? (<FontAwesomeIcon icon={faMicrophone} />) : (<FontAwesomeIcon icon={faMicrophoneSlash} />)}</div>
+            </div>)}
         </div>
         {error && (
           <div className="WeatherResultsLoading">

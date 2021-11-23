@@ -7,8 +7,9 @@ import { Col, Row } from "react-bootstrap";
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [city, setCity] = useState("New York City");
+  const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
   const [results, setResults] = useState(null);
+  const [city, setCity] = useState('New York');
 
   function getLocation(){
     if (navigator.geolocation){
@@ -57,8 +58,10 @@ const CurrentCityWeather = () => {
   
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?q=" +
-        city +
+      "https://api.openweathermap.org/data/2.5/weather?lat=" +
+        cityCoordinates.lat +
+        "&lon=" +
+        cityCoordinates.lon +
         "&units=metric" +
         "&appid=" +
         process.env.REACT_APP_APIKEY
@@ -84,7 +87,19 @@ const CurrentCityWeather = () => {
       .catch((err) => {
         setError(err);
       });
-  }, [city]);
+  }, [cityCoordinates]);
+
+  function setCoordinates(place) {
+    var latitude = place.geometry.location.lat();
+    var longitude = place.geometry.location.lng();
+    var coordinates = {lat: latitude, lon: longitude};
+    setCityCoordinates(coordinates);
+  }
+
+  function getCity(address) {
+    var addressComponents = address.split(",");
+    setCity(addressComponents[0]);
+  }
 
   return (
     <>
@@ -93,9 +108,10 @@ const CurrentCityWeather = () => {
         <Autocomplete
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
           onPlaceSelected={(place) => {
-            setCity(place.formatted_address)
+            setCoordinates(place);
+            getCity(place.formatted_address);
           }}
-          defaultValue={city}
+          defaultValue={"New York, NY, USA"}
           className="inputCity"
         />
         {error && (
@@ -103,7 +119,7 @@ const CurrentCityWeather = () => {
             <h2 className="px-3">Error: {error.message}</h2>
           </div>
         )}
-        {city && !error && !isLoaded && (
+        {cityCoordinates && !error && !isLoaded && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Loading...</h2>
           </div>
@@ -125,7 +141,7 @@ const CurrentCityWeather = () => {
                   </div>
                   <i>
                     <div>
-                      {results.name}, {results.sys.country}
+                      {city}, {results.sys.country}
                     </div>
                   </i>
                 </Col>

@@ -10,7 +10,7 @@ const SongRecommendation = (props) => {
     var accessToken = '';
     var playlistId = '';
     const [tracksData, setTracksData] = useState(null);
-    // eslint-disable-next-line no-lone-blocks
+   
     {
         if (props.options.weather[0].main === 'Clear') { playlistId = "2Ub0SnonpnLgiWP9LQs5kO" }
         else

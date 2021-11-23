@@ -5,7 +5,7 @@ import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMicrophone, faMicrophoneSlash, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 
 const CurrentCityWeather = () => {
 
@@ -72,13 +72,6 @@ const CurrentCityWeather = () => {
       <div className="CurrentCityWeather">
         <h2 className="pb-4">Enter a city below 👇</h2>
         <div className='input-ctn'>
-          {/**<input
-            type="text"
-            value={city}
-            defaultValue={city}
-            className="inputCity"
-            onChange={(event) => setCity(event.target.value)}
-          />**/}
           <Autocomplete
             apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
             onPlaceSelected={(place) => {

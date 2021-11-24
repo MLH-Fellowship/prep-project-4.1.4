@@ -8,47 +8,47 @@ import SongRecommendation from "../SongRecommendation/SongRecommendation";
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
+  const [cityCoordinates, setCityCoordinates] = useState({ lat: '40.7128', lon: '-74.0060' });
   const [results, setResults] = useState(null);
   const [city, setCity] = useState('New York');
 
-  function getLocation(){
-    if (navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(showPosition,showError);
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
     }
-    else{
+    else {
       alert("Geolocation is not supported by this browser.");
     }
   }
 
-  function showPosition(position){
-    var lat=position.coords.latitude;
-    var lon=position.coords.longitude;
-  
+  function showPosition(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+
     fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
-    .then(response => response.json())
-    .then(data => {
-      var currCity = data.city ? data.city : data.principalSubdivision
-      setCity(currCity)
-    })
-    .catch(error => alert(error))
-    
+      .then(response => response.json())
+      .then(data => {
+        var currCity = data.city ? data.city : data.principalSubdivision
+        setCity(currCity)
+      })
+      .catch(error => alert(error))
+
   }
-  
-  function showError(error){
-    switch(error.code){
-        case error.PERMISSION_DENIED:
-          alert("User denied the request for Geolocation.")
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert("Location information is unavailable.")
-          break;
-        case error.TIMEOUT:
-          alert("The request to get user location timed out.")
-          break;
-        case error.UNKNOWN_ERROR:
-          alert("An unknown error occurred.")
-          break;
+
+  function showError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("User denied the request for Geolocation.")
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("Location information is unavailable.")
+        break;
+      case error.TIMEOUT:
+        alert("The request to get user location timed out.")
+        break;
+      case error.UNKNOWN_ERROR:
+        alert("An unknown error occurred.")
+        break;
     }
   }
 
@@ -56,46 +56,34 @@ const CurrentCityWeather = () => {
     getLocation()
   }, [])
 
-
   useEffect(() => {
-    async function getData() {
-      await fetch(
-        "https://api.openweathermap.org/data/2.5/weather?q=" +
-        city +
-
     fetch(
       "https://api.openweathermap.org/data/2.5/weather?lat=" +
-        cityCoordinates.lat +
-        "&lon=" +
-        cityCoordinates.lon +
-        "&units=metric" +
-        "&appid=" +
-        process.env.REACT_APP_APIKEY
-      )
-
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            
-            if (result["cod"] !== 200) {
-              setIsLoaded(true);
-              setError(result);
-            } else {
-              setIsLoaded(true);
-              setError();
-              setResults(result);
-              
-            }
-          },
-          (error) => {
-            setError(error);
+      cityCoordinates.lat +
+      "&lon=" +
+      cityCoordinates.lon +
+      "&units=metric" +
+      "&appid=" +
+      process.env.REACT_APP_APIKEY
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+          if (result["cod"] !== 200) {
+            setIsLoaded(true);
+            setError(result);
+          } else {
+            setIsLoaded(true);
+            setError();
+            setResults(result);
+            console.log(result);
           }
-        )
-        .catch((err) => {
-          setError(err);
-        });
-    } getData();
-  }, [city]);
+        },
+        (error) => {
+          setError(error);
+        }
+      )
       .catch((err) => {
         setError(err);
       });
@@ -104,7 +92,7 @@ const CurrentCityWeather = () => {
   function setCoordinates(place) {
     var latitude = place.geometry.location.lat();
     var longitude = place.geometry.location.lng();
-    var coordinates = {lat: latitude, lon: longitude};
+    var coordinates = { lat: latitude, lon: longitude };
     setCityCoordinates(coordinates);
   }
 
@@ -112,7 +100,6 @@ const CurrentCityWeather = () => {
     var addressComponents = address.split(",");
     setCity(addressComponents[0]);
   }
-
 
   return (
     <>
@@ -149,31 +136,13 @@ const CurrentCityWeather = () => {
                     <div className="CurrentActualTemp">
                       {results.main.temp}
                       <sup>°C</sup>
-          <div
-            style={Background[results.weather[0].main]}
-            className="WeatherResults"
-          >
-            <div className="InnerWeatherResults">
-              <Row className="justify-content-center">
-                <Col className="col-md-5 col-12">
-                  <div className="CurrentActualTemp">
-                    {results.main.temp}
-                    <sup>°C</sup>
-                  </div>
-                  <div className="CurrentActualWeather">
-                    {results.weather[0].main}
-                  </div>
-                  <i>
-                    <div>
-                      {city}, {results.sys.country}
-
                     </div>
                     <div className="CurrentActualWeather">
                       {results.weather[0].main}
                     </div>
                     <i>
                       <div>
-                        {results.name}, {results.sys.country}
+                        {city}, {results.sys.country}
                       </div>
                     </i>
                   </Col>

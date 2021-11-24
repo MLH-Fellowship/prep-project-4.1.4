@@ -133,7 +133,7 @@ const HourlyCityWeather = ({city}) => {
             )}
             {isLoaded && !error && timeStamps && (
                 <div>
-                    <Carousel>
+                    <Carousel interval={8000}>
                         {timeStamps.map((dailyForecast, i) => (
                             <Carousel.Item key={i}>
                                 <br></br>

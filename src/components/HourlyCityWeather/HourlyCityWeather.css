@@ -4,8 +4,17 @@
     
     .carousel-control-prev-icon {
         margin-top: 170px;
+        filter: contrast(0%);
+        filter: brightness(10%);
     }
     
     .carousel-control-next-icon {
         margin-top: 170px;
+        filter: contrast(0%);
+        filter: brightness(10%);
+    }
+
+    .carousel-indicators {
+        filter: contrast(0%);
+        filter: brightness(10%);
     }

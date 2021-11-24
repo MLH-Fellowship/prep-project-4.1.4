@@ -74,6 +74,7 @@ const CurrentCityWeather = () => {
             setCoordinates(place);
             getCity(place.formatted_address);
           }}
+          inputAutocompleteValue={city}
           Value={city}
           className="inputCity"
         />

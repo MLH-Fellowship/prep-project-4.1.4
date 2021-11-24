@@ -29,10 +29,9 @@ const CurrentCityWeather = () => {
     .then(data => {
       const currCity = data.city ? data.city : data.principalSubdivision
       setCity(currCity)
+      setCityCoordinates({lat: lat,lon: lon});
     })
-    .catch(error => alert(error))
-
-  }
+    .catch(error => alert(error))}
 
   function showError(error){
     switch(error.code){
@@ -54,7 +53,6 @@ const CurrentCityWeather = () => {
   useEffect(() => {
     getLocation()
   }, [])
-
 
   useEffect(() => {
     fetch(
@@ -95,7 +93,7 @@ const CurrentCityWeather = () => {
   }
 
   function getCity(address) {
-    var addressComponents = address.split(",");
+    const addressComponents = address.split(",");
     setCity(addressComponents[0]);
   }
 
@@ -109,7 +107,7 @@ const CurrentCityWeather = () => {
             setCoordinates(place);
             getCity(place.formatted_address);
           }}
-          defaultValue={"New York, NY, USA"}
+          defaultValue={city}
           className="inputCity"
         />
         {error && (

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef  } from "react";
+import { useEffect, useState } from "react";
 import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
 import Background from "../../data/BackGroundAccordingToWeather";
@@ -53,7 +53,7 @@ const CurrentCityWeather = () => {
 
   useEffect(() => {
     getLocation()
-  }, [])
+  })
 
   
   useEffect(() => {

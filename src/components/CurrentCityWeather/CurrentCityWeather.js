@@ -11,8 +11,53 @@ const CurrentCityWeather = () => {
 
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [city, setCity] = useState("New York City");
+  const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
   const [results, setResults] = useState(null);
+  const [city, setCity] = useState('New York');
+
+  function getLocation(){
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+    else{
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function showPosition(position){
+    var lat=position.coords.latitude;
+    var lon=position.coords.longitude;
+  
+    fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
+    .then(response => response.json())
+    .then(data => {
+      var currCity = data.city ? data.city : data.principalSubdivision
+      setCity(currCity)
+    })
+    .catch(error => alert(error))
+    
+  }
+  
+  function showError(error){
+    switch(error.code){
+        case error.PERMISSION_DENIED:
+          alert("User denied the request for Geolocation.")
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.")
+          break;
+        case error.TIMEOUT:
+          alert("The request to get user location timed out.")
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred.")
+          break;
+    }
+  }
+
+  useEffect(() => {
+    getLocation()
+  }, [])
 
   const {
     transcript,
@@ -23,11 +68,13 @@ const CurrentCityWeather = () => {
 
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?q=" +
-      city +
-      "&units=metric" +
-      "&appid=" +
-      process.env.REACT_APP_APIKEY
+      "https://api.openweathermap.org/data/2.5/weather?lat=" +
+        cityCoordinates.lat +
+        "&lon=" +
+        cityCoordinates.lon +
+        "&units=metric" +
+        "&appid=" +
+        process.env.REACT_APP_APIKEY
     )
       .then((res) => res.json())
       .then(
@@ -50,7 +97,19 @@ const CurrentCityWeather = () => {
       .catch((err) => {
         setError(err);
       });
-  }, [city]);
+  }, [cityCoordinates]);
+
+  function setCoordinates(place) {
+    var latitude = place.geometry.location.lat();
+    var longitude = place.geometry.location.lng();
+    var coordinates = {lat: latitude, lon: longitude};
+    setCityCoordinates(coordinates);
+  }
+
+  function getCity(address) {
+    var addressComponents = address.split(",");
+    setCity(addressComponents[0]);
+  }
 
 
   useEffect(() => {
@@ -75,24 +134,25 @@ const CurrentCityWeather = () => {
           <Autocomplete
             apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
             onPlaceSelected={(place) => {
-              setCity(place.formatted_address)
-            }}
-            defaultValue={city}
-            className="inputCity"
+            setCoordinates(place);
+            getCity(place.formatted_address);
+          }}
+          defaultValue={"New York, NY, USA"}
+          className="inputCity"
           />
-          {browserSupportsSpeechRecognition && (
+          {browserSupportsSpeechRecognition ? (
             <div className='voice-ctn'>
               <div
                 className='microphone-icon'
                 onClick={handleMicrophone}>{listening ? (<FontAwesomeIcon icon={faMicrophone} />) : (<FontAwesomeIcon icon={faMicrophoneSlash} />)}</div>
-            </div>)}
+            </div>):(<div></div>)}
         </div>
         {error && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Error: {error.message}</h2>
           </div>
         )}
-        {city && !error && !isLoaded && (
+        {cityCoordinates && !error && !isLoaded && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Loading...</h2>
           </div>
@@ -114,7 +174,7 @@ const CurrentCityWeather = () => {
                   </div>
                   <i>
                     <div>
-                      {results.name}, {results.sys.country}
+                      {city}, {results.sys.country}
                     </div>
                   </i>
                 </Col>

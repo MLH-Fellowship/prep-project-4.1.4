@@ -113,7 +113,7 @@ const CurrentCityWeather = () => {
             setCoordinates(place);
             getCity(place.formatted_address);
           }}
-          defaultValue={"New York, NY, USA"}
+          defaultValue={city}
           className="inputCity"
         />
         {error && (

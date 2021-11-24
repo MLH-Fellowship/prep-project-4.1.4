@@ -12,62 +12,65 @@ const CurrentCityWeather = () => {
   const [results, setResults] = useState(null);
   const [city, setCity] = useState('New York');
 
-
   function getLocation(){
-  if (navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(showPosition,showError);
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+    else{
+      alert("Geolocation is not supported by this browser.");
+    }
   }
-  else{
-    alert("Geolocation is not supported by this browser.");
+
+  function showPosition(position){
+    var lat=position.coords.latitude;
+    var lon=position.coords.longitude;
+
+    fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
+    .then(response => response.json())
+    .then(data => {
+      var currCity = data.city ? data.city : data.principalSubdivision
+      setCity(currCity)
+    })
+    .catch(error => alert(error))
+
   }
-}
 
-function showPosition(position){
-  var lat=position.coords.latitude;
-  var lon=position.coords.longitude;
-
-  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
-  .then(response => response.json())
-  .then(data => {
-    var currCity = data.city ? data.city : data.principalSubdivision
-    setCity(currCity)
-  })
-  .catch(error => alert(error))
-
-}
-
-function showError(error){
-  switch(error.code){
-      case error.PERMISSION_DENIED:
-        alert("User denied the request for Geolocation.")
-        break;
-      case error.POSITION_UNAVAILABLE:
-        alert("Location information is unavailable.")
-        break;
-      case error.TIMEOUT:
-        alert("The request to get user location timed out.")
-        break;
-      case error.UNKNOWN_ERROR:
-        alert("An unknown error occurred.")
-        break;
+  function showError(error){
+    switch(error.code){
+        case error.PERMISSION_DENIED:
+          alert("User denied the request for Geolocation.")
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.")
+          break;
+        case error.TIMEOUT:
+          alert("The request to get user location timed out.")
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred.")
+          break;
+    }
   }
-}
 
-useEffect(() => {
-  getLocation()
-}, [])
+  useEffect(() => {
+    getLocation()
+  }, [])
+
 
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?"
-     + `lat=${cityCoordinates.lat}&`
-     + `lon=${cityCoordinates.lon}&`
-     + "units=metric&"
-     + `appid=${process.env.REACT_APP_APIKEY}`
+      "https://api.openweathermap.org/data/2.5/weather?lat=" +
+        cityCoordinates.lat +
+        "&lon=" +
+        cityCoordinates.lon +
+        "&units=metric" +
+        "&appid=" +
+        process.env.REACT_APP_APIKEY
     )
       .then((res) => res.json())
       .then(
         (result) => {
+          console.log(result);
           if (result["cod"] !== 200) {
             setIsLoaded(true);
             setError(result);
@@ -85,13 +88,12 @@ useEffect(() => {
       .catch((err) => {
         setError(err);
       });
-  },[cityCoordinates],[]);
-
+  }, [cityCoordinates]);
 
   function setCoordinates(place) {
-    const latitude = place.geometry.location.lat();
-    const longitude = place.geometry.location.lng();
-    const coordinates = {lat: latitude, lon: longitude};
+    var latitude = place.geometry.location.lat();
+    var longitude = place.geometry.location.lng();
+    var coordinates = {lat: latitude, lon: longitude};
     setCityCoordinates(coordinates);
   }
 
@@ -100,12 +102,11 @@ useEffect(() => {
     setCity(addressComponents[0]);
   }
 
-
   return (
     <>
       <div className="CurrentCityWeather">
         <h2 className="pb-4">Enter a city below 👇</h2>
-          <Autocomplete
+        <Autocomplete
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
           onPlaceSelected={(place) => {
             setCoordinates(place);
@@ -119,7 +120,7 @@ useEffect(() => {
             <h2 className="px-3">Error: {error.message}</h2>
           </div>
         )}
-        {city && !error && !isLoaded && (
+        {cityCoordinates && !error && !isLoaded && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Loading...</h2>
           </div>
@@ -141,7 +142,7 @@ useEffect(() => {
                   </div>
                   <i>
                     <div>
-                      {results.name}, {results.sys.country}
+                      {city}, {results.sys.country}
                     </div>
                   </i>
                 </Col>

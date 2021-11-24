@@ -22,13 +22,12 @@ const CurrentCityWeather = () => {
   }
 
   function showPosition(position){
-    var lat=position.coords.latitude;
-    var lon=position.coords.longitude;
-
+    const lat=position.coords.latitude;
+    const lon=position.coords.longitude;
     fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
     .then(response => response.json())
     .then(data => {
-      var currCity = data.city ? data.city : data.principalSubdivision
+      const currCity = data.city ? data.city : data.principalSubdivision
       setCity(currCity)
     })
     .catch(error => alert(error))
@@ -59,13 +58,11 @@ const CurrentCityWeather = () => {
 
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?lat=" +
-        cityCoordinates.lat +
-        "&lon=" +
-        cityCoordinates.lon +
-        "&units=metric" +
-        "&appid=" +
-        process.env.REACT_APP_APIKEY
+      "https://api.openweathermap.org/data/2.5/weather?"
+      + `lat=${cityCoordinates.lat}&`
+      + `lon=${cityCoordinates.lon}&`
+      + "units=metric&"
+      + `appid=${process.env.REACT_APP_APIKEY}`
     )
       .then((res) => res.json())
       .then(
@@ -91,9 +88,9 @@ const CurrentCityWeather = () => {
   }, [cityCoordinates]);
 
   function setCoordinates(place) {
-    var latitude = place.geometry.location.lat();
-    var longitude = place.geometry.location.lng();
-    var coordinates = {lat: latitude, lon: longitude};
+    const latitude = place.geometry.location.lat();
+    const longitude = place.geometry.location.lng();
+    const coordinates = {lat: latitude, lon: longitude};
     setCityCoordinates(coordinates);
   }
 

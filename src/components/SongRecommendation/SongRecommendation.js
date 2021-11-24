@@ -21,21 +21,23 @@ const SongRecommendation = (props) => {
     }[props.options.weather[0].main] || '5xyhI355JcExXTV96m0CBp';
 
     const handleGetPlaylists = async () => {
-        await fetch(PLAYLISTS_ENDPOINT + playlistId + '/tracks?limit=10',
+
+        fetch(PLAYLISTS_ENDPOINT + playlistId + '/tracks?limit=10',
             { method: 'GET', headers: { "Authorization": `Bearer ${accessToken}` }, }
         )
             .then((result) => result.json()).then((response) => {
-                
-                var tracks = response.items;
-                var tempTracksData = [];
-                for (let i = 0; i < tracks.length; i++)
-                    tempTracksData.push({ 'song': tracks[i].track.name, 'artist': tracks[i].track.artists[0].name, 'imageUrl': tracks[i].track.album.images[0].url });
-                setTracksData(tempTracksData);
-                
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+                console.log(response);
+                var items = response.items;
+                setTracksData(
+                    items.map(({ track }) => ({
+                        song: track.name,
+                        artist: track.artists[0].name,
+                        imageUrl: track.album.images[0].url
+                    }))
+                )
+            }
+            )
+            .catch(console.error);
     };
 
     useEffect(() => {

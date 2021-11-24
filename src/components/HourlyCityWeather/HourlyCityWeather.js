@@ -20,7 +20,7 @@ const HourlyCityWeather = ({city}) => {
             .then((res) => res.json())
             .then(
                 (result) => {
-                    if (result["cod"] !== "200") {
+                    if (result.cod !== "200") {
                         setIsLoaded(true);
                         setError(result);
                     } else {
@@ -28,37 +28,23 @@ const HourlyCityWeather = ({city}) => {
                         setError();
                         organizeForecast(result);
                     }
-                },
-                (error) => {
-                    setError(error);
                 }
             )
-            .catch((err) => {
-                setError(err);
-            });
+            .catch(err => setError(err));
 
     }, [city], []);
 
     function organizeForecast(result) {
-        const hourlyForecasts = [];
-        var dailyData = [];
-        for (let i = 0; i < result.list.length; i++) {
-            var dateAndTime = result.list[i].dt_txt.split(" ");
-            var time = dateAndTime[1].split(":");
-            time = time[0] + ":" + time[1];
-            dailyData = {
-                "day": getWeekday(result.list[i].dt_txt),
-                "time": time,
-                "temperature": parseInt(result.list[i].main.temp, 10),
-                "icon": result.list[i].weather[0].main
-            };
-            hourlyForecasts.push(dailyData);
-        }
-        var dailyForecasts = [];
+        const hourlyForecasts = result.list.map((item) => ({
+            day: getWeekday(item.dt_txt),
+            time: item.dt_txt.slice(-8, -3), 
+            temperature: parseInt(item.main.temp, 10),
+            icon: item.weather[0].main
+          }))
+        const dailyForecasts = [];
         for (var j = 0; j < hourlyForecasts.length; j += 8) {
             dailyForecasts.push(hourlyForecasts.slice(j, j + 8));
         }
-
         setTimeStamps(dailyForecasts);
     }
 

@@ -45,7 +45,7 @@ const CurrentCityWeather = () => {
         case error.TIMEOUT:
           alert("The request to get user location timed out.")
           break;
-        case error.UNKNOWN_ERROR:
+        default:
           alert("An unknown error occurred.")
           break;
     }

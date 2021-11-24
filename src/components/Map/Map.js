@@ -42,20 +42,27 @@ const WMap = ({city, setCity, cityCoordinates, setCityCoordinates}) => {
 
   useEffect(() => {
     setPosition({Lat: cityCoordinates.lat, Long: cityCoordinates.lon, zoom: 9, City: city})
-  }, [cityCoordinates]);
+  }, [cityCoordinates, city]);
 
   useEffect(() => {
     setMap(map)
   }, [map])
 
-  return (<> < div > <MapContainer className="map" whenCreated={setMap
-} center={[position.Lat, position.Long]} zoom={2
-}>
-    <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+  useEffect(() => {
+    const mapCenter = [position.Lat, position.Long];
+    if (map) {
+      map.setView(mapCenter, position.zoom);
+    }
+  }, [map, position]);
 
-    <PlaceMarker city={city} setCity={setCity} cityCoordinates={cityCoordinates} setCityCoordinates={setCityCoordinates} map={map} setMap={setMap}/>
-
-  </ MapContainer > < /div>
-</ >);
+  return (
+    <>
+      <div>
+        <MapContainer className="map" whenCreated={setMap} center={[position.Lat, position.Long]} zoom={2}>
+          <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+          <PlaceMarker city={city} setCity={setCity} cityCoordinates={cityCoordinates} setCityCoordinates={setCityCoordinates} map={map} setMap={setMap}/>
+        </ MapContainer >
+      </div>
+    </>); 
 }
 export default WMap;

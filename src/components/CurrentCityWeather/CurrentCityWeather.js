@@ -3,7 +3,7 @@ import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
 import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
-import Map from "../../components/Map/Map";
+import WMap from "../../components/Map/Map";
 
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
@@ -142,7 +142,7 @@ const CurrentCityWeather = () => {
                 </Col>
               </Row>
             </div>
-            <Map city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}/>
+            <WMap city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}/>
           </div>
         )}
       </div>

@@ -42,7 +42,7 @@ const SongRecommendation = (props) => {
                 console.log(tracksData[0].song);
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             });
     };
 

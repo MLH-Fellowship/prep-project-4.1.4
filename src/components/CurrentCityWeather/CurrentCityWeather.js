@@ -9,15 +9,13 @@ const CurrentCityWeather = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
   const [results, setResults] = useState(null);
-  const [city, setCity] = useState('');
-  const [defCity,setDefCity] = useState(false);
+  const [city, setCity] = useState('New York');
 
   function getLocation(){
     if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(showPosition,showError);
     }
     else{
-      setCity("New York");
       alert("Geolocation is not supported by this browser.");
     }
   }
@@ -39,7 +37,6 @@ const CurrentCityWeather = () => {
   }
   
   function showError(error){
-    setCity("New York");
     switch(error.code){
         case error.PERMISSION_DENIED:
           alert("User denied the request for Geolocation.")

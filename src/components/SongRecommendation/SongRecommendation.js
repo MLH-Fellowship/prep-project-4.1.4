@@ -10,7 +10,6 @@ const SongRecommendation = (props) => {
     var accessToken = '';
     var playlistId = '';
     const [tracksData, setTracksData] = useState(null);
-   
     playlistId = {
         Clear: "2Ub0SnonpnLgiWP9LQs5kO",
         Clouds: "3QrZOF8JmVADH0jl2DZv8r",
@@ -26,7 +25,7 @@ const SongRecommendation = (props) => {
             { method: 'GET', headers: { "Authorization": `Bearer ${accessToken}` }, }
         )
             .then((result) => result.json()).then((response) => {
-                
+
                 var items = response.items;
                 setTracksData(
                     items.map(({ track }) => ({
@@ -40,6 +39,7 @@ const SongRecommendation = (props) => {
             .catch(console.error);
     };
 
+
     useEffect(() => {
         const _getToken = async () => {
 
@@ -52,7 +52,7 @@ const SongRecommendation = (props) => {
                 body: 'grant_type=client_credentials'
             }).then((result) => result.json()).then((data) => {
                 accessToken = data.access_token;
-                
+
                 handleGetPlaylists();
             }
             ).catch((error) => { console.error(error); });

@@ -28,7 +28,9 @@ const CurrentCityWeather = () => {
     .then(response => response.json())
     .then(data => {
       var currCity = data.city ? data.city : data.principalSubdivision
-      setCity(currCity)
+      setCity(currCity);
+      var coordinates = {lat: lat, lon: lon};
+      setCityCoordinates(coordinates);
     })
     .catch(error => alert(error))
     

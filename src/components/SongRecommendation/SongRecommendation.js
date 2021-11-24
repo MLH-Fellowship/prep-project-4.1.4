@@ -11,22 +11,14 @@ const SongRecommendation = (props) => {
     var playlistId = '';
     const [tracksData, setTracksData] = useState(null);
    
-    {
-        if (props.options.weather[0].main === 'Clear') { playlistId = "2Ub0SnonpnLgiWP9LQs5kO" }
-        else
-            if (props.options.weather[0].main === 'Clouds') { playlistId = "3QrZOF8JmVADH0jl2DZv8r" }
-            else
-                if (props.options.weather[0].main === 'Smoke') { playlistId = "7MWiSLhNiRaOXhRnFLo9wt" }
-                else
-                    if (props.options.weather[0].main === 'Rain') { playlistId = "7iQ4SQo7LG5ezVKXoeG9oZ" }
-                    else
-                        if (props.options.weather[0].main === 'Haze') { playlistId = "6KXDlalFV1SqateTdKYgUD" }
-                        else
-                            if (props.options.weather[0].main === 'Drizzle') { playlistId = "7wBB5LF1xfreBTOKNLllx8" }
-                            else {
-                                playlistId = "5xyhI355JcExXTV96m0CBp";
-                            }
-    };
+    playlistId = {
+        Clear: "2Ub0SnonpnLgiWP9LQs5kO",
+        Clouds: "3QrZOF8JmVADH0jl2DZv8r",
+        Smoke: "7MWiSLhNiRaOXhRnFLo9wt",
+        Rain: "7iQ4SQo7LG5ezVKXoeG9oZ",
+        Haze: "6KXDlalFV1SqateTdKYgUD",
+        Drizzle: "7wBB5LF1xfreBTOKNLllx8",
+    }[props.options.weather[0].main] || '5xyhI355JcExXTV96m0CBp';
 
     const handleGetPlaylists = async () => {
         await fetch(PLAYLISTS_ENDPOINT + playlistId + '/tracks?limit=10',

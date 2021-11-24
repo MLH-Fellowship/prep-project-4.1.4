@@ -61,7 +61,7 @@ const SongRecommendation = (props) => {
                 console.log(accessToken);
                 handleGetPlaylists();
             }
-            ).catch((error) => { console.log(error); });
+            ).catch((error) => { console.error(error); });
 
         }
         _getToken()

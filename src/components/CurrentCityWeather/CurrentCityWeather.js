@@ -24,7 +24,6 @@ const CurrentCityWeather = () => {
   function showPosition(position){
     var lat=position.coords.latitude;
     var lon=position.coords.longitude;
-
     fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
     .then(response => response.json())
     .then(data => {
@@ -32,8 +31,6 @@ const CurrentCityWeather = () => {
       setCity(currCity)
     })
     .catch(error => alert(error))
-
-  }
 
   function showError(error){
     switch(error.code){
@@ -55,7 +52,6 @@ const CurrentCityWeather = () => {
   useEffect(() => {
     getLocation()
   }, [])
-
 
   useEffect(() => {
     fetch(

@@ -20,7 +20,6 @@ const PlaceMarker = ({
 }) => {
 
   useMapEvent("click", (e) => {
-    console.log(e.latlng);
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${e.latlng.lat}&lon=${e.latlng.lng}&appid=${process.env.REACT_APP_APIKEY}`).then((res) => res.json()).then((result) => {
       setCityCoordinates({lat: e.latlng.lat, lon: e.latlng.lng});
       setCity(result.name);
@@ -63,6 +62,6 @@ const WMap = ({city, setCity, cityCoordinates, setCityCoordinates}) => {
           <PlaceMarker city={city} setCity={setCity} cityCoordinates={cityCoordinates} setCityCoordinates={setCityCoordinates} map={map} setMap={setMap}/>
         </ MapContainer >
       </div>
-    </>); 
+    </>);
 }
 export default WMap;

@@ -8,21 +8,17 @@ import WMap from "../../components/Map/Map";
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [city, setCity] = useState("New York City");
-  const [results, setResults] = useState(null);
-  const [lat, setLat] = useState("");
-  const [long, setLong] = useState("");
   const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
+  const [results, setResults] = useState(null);
+  const [city, setCity] = useState('New York');
 
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?lat=" +
-          cityCoordinates.lat +
-          "&lon=" +
-          cityCoordinates.lon +
-          "&units=metric" +
-          "&appid=" +
-          process.env.REACT_APP_APIKEY
+      "https://api.openweathermap.org/data/2.5/weather?"
+     + `lat=${cityCoordinates.lat}&`
+     + `lon=${cityCoordinates.lon}&`
+     + "units=metric&"
+     + `appid=${process.env.REACT_APP_APIKEY}`
     )
       .then((res) => res.json())
       .then(
@@ -34,7 +30,6 @@ const CurrentCityWeather = () => {
             setIsLoaded(true);
             setError();
             setResults(result);
-            console.log(result.name);
             setLat(result.coord.lat);
             setLong(result.coord.lon);
             setCity(result.name + ", " + result.sys.country)
@@ -51,15 +46,14 @@ const CurrentCityWeather = () => {
 
 
   function setCoordinates(place) {
-    var latitude = place.geometry.location.lat();
-    var longitude = place.geometry.location.lng();
-    var coordinates = {lat: latitude, lon: longitude};
+    const latitude = place.geometry.location.lat();
+    const longitude = place.geometry.location.lng();
+    const coordinates = {lat: latitude, lon: longitude};
     setCityCoordinates(coordinates);
   }
 
   function getCity(address) {
     var addressComponents = address.split(",");
-    console.log("city ", addressComponents[0]);
     setCity(addressComponents[0]);
   }
 

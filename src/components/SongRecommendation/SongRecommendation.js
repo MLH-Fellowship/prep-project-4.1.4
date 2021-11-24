@@ -25,13 +25,13 @@ const SongRecommendation = (props) => {
             { method: 'GET', headers: { "Authorization": `Bearer ${accessToken}` }, }
         )
             .then((result) => result.json()).then((response) => {
-                console.log(response);
+                
                 var tracks = response.items;
                 var tempTracksData = [];
                 for (let i = 0; i < tracks.length; i++)
                     tempTracksData.push({ 'song': tracks[i].track.name, 'artist': tracks[i].track.artists[0].name, 'imageUrl': tracks[i].track.album.images[0].url });
                 setTracksData(tempTracksData);
-                console.log(tracksData[0].song);
+                
             })
             .catch((error) => {
                 console.error(error);
@@ -50,7 +50,7 @@ const SongRecommendation = (props) => {
                 body: 'grant_type=client_credentials'
             }).then((result) => result.json()).then((data) => {
                 accessToken = data.access_token;
-                console.log(accessToken);
+                
                 handleGetPlaylists();
             }
             ).catch((error) => { console.error(error); });

@@ -1,10 +1,11 @@
-import logo from "../../assets/images/mlh-prep.png";
+import './Header.css'
+import logo from "../../assets/images/sound_forecast.png";
 
 const Header = () => {
   return (
-    <>
-      <img className="logo" src={logo} alt="MLH Prep Logo"></img>
-    </>
+    <div className="MLHHeader">
+      <img className="logo" src={logo} alt="SOUND FORECAST"></img>
+    </div>
   );
 };
 

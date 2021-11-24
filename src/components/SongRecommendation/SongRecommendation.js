@@ -26,7 +26,7 @@ const SongRecommendation = (props) => {
             { method: 'GET', headers: { "Authorization": `Bearer ${accessToken}` }, }
         )
             .then((result) => result.json()).then((response) => {
-                console.log(response);
+                
                 var items = response.items;
                 setTracksData(
                     items.map(({ track }) => ({

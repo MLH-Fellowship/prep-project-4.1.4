@@ -30,7 +30,7 @@ const CurrentCityWeather = () => {
       var currCity = data.city ? data.city : data.principalSubdivision
       setCity(currCity)
     })
-    .catch(error => alert(error))
+    .catch(error => alert(error))}
 
   function showError(error){
     switch(error.code){

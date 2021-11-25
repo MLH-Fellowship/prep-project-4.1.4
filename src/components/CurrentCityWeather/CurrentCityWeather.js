@@ -134,6 +134,13 @@ const CurrentCityWeather = () => {
     }
   }
 
+  async function checkBraveBrowser() {
+    if (navigator.brave && await navigator.brave.isBrave()) {
+      return false
+    } else {
+      return true
+    }
+  }
 
   return (
     <>
@@ -149,7 +156,7 @@ const CurrentCityWeather = () => {
             defaultValue={"New York, NY, USA"}
             className="inputCity"
           />
-          {browserSupportsSpeechRecognition ? (
+          {browserSupportsSpeechRecognition && checkBraveBrowser ? (
             <div className='voice-ctn'>
               <div
                 className='microphone-icon'

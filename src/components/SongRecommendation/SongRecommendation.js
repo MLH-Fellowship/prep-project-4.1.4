@@ -39,7 +39,8 @@ const SongRecommendation = (props) => {
         const tracks = items.map(({ track }) => ({
             song: track.name,
             artist: track.artists[0].name,
-            imageUrl: track.album.images[0].url
+            imageUrl: track.album.images[0].url,
+            spotifyUrl: track.external_urls.spotify
         }))
         organizeInRows(tracks);
 
@@ -84,19 +85,20 @@ const SongRecommendation = (props) => {
 
             <div className="songs-container">
                 {tracksData &&
-                    tracksData.map((singleRow , i) => (
+                    tracksData.map((singleRow, i) => (
                         <Row className="songs-row" key={i}>
-                            {singleRow.map((singleTrack , j) => (
+                            {singleRow.map((singleTrack, j) => (
                                 <Col fluid="true" className="song-card" key={j}>
                                     <div className="card">
                                         <div className="overlayer">
                                         </div>
-                                        <img src={singleTrack.imageUrl} alt='Cover Page of Song' />
+                                        <a target="_blank" href={singleTrack.spotifyUrl}>
+                                            <img className="song-image" src={singleTrack.imageUrl} alt='Cover Page of Song' />
+                                        </a>
                                         <div>
                                             <h6 className="song-title">{singleTrack.song}</h6>
                                             <h6 className="song-artist">{singleTrack.artist}</h6>
                                         </div>
-
                                     </div>
                                 </Col>
                             ))}

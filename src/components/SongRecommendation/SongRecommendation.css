@@ -9,9 +9,9 @@
 .card:hover .overlayer {
 	visibility: visible;
 }
-.card img {
+.song-image {
 	width: 100%;
-	height: 100%;
+	height: 94%;
     padding-left: 0;
     padding-right: 0;
 }
@@ -25,6 +25,7 @@
 	background: rgba(0,0,0,0.6);
 	text-align: center;
 	visibility: hidden;
+    pointer-events: none;
 }
 
 .songs-container {

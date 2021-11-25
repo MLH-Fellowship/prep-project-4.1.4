@@ -3,6 +3,7 @@ import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
 import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
+import HourlyCityWeather from "../HourlyCityWeather/HourlyCityWeather";
 import SongRecommendation from "../SongRecommendation/SongRecommendation";
 
 const CurrentCityWeather = () => {
@@ -177,6 +178,9 @@ const CurrentCityWeather = () => {
                     </Row>
                   </Col>
                 </Row>
+              <Row>
+                <HourlyCityWeather city={city} />
+              </Row>
               </div>
             </div>
             <SongRecommendation options={results} />

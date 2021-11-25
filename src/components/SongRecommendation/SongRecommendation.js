@@ -5,11 +5,13 @@ import "./SongRecommendation.css";
 
 const SongRecommendation = (props) => {
 
+    const [tracksData, setTracksData] = useState(null);
     const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/playlists/";
     const ACCESS_TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
     var accessToken = '';
     var playlistId = '';
-    const [tracksData, setTracksData] = useState(null);
+
+    console.log('tracksData: ' + tracksData);
     playlistId = {
         Clear: "2Ub0SnonpnLgiWP9LQs5kO",
         Clouds: "3QrZOF8JmVADH0jl2DZv8r",
@@ -27,6 +29,7 @@ const SongRecommendation = (props) => {
             .then((result) => result.json()).then((response) => {
 
                 var items = response.items;
+                console.log(items);
                 setTracksData(
                     items.map(({ track }) => ({
                         song: track.name,
@@ -52,6 +55,7 @@ const SongRecommendation = (props) => {
                 body: 'grant_type=client_credentials'
             }).then((result) => result.json()).then((data) => {
                 accessToken = data.access_token;
+                console.log('Access token: ' + accessToken);
 
                 handleGetPlaylists();
             }
@@ -59,12 +63,12 @@ const SongRecommendation = (props) => {
 
         }
         _getToken()
-    }, [tracksData]);
+    }, [props]);
 
     return (
         <>
             <div className="Recommended Songs">
-                <h2 className="Catchy Header">Listen Songs That Match Your Mood!</h2>
+                <h2 className="Catchy Header">Listen to songs that match your mood!</h2>
                 <ListGroup>
                     {tracksData &&
                         tracksData.map((singleTrack) =>

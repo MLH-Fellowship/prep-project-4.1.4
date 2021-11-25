@@ -15,6 +15,7 @@ const CurrentCityWeather = () => {
   const [cityCoordinates, setCityCoordinates] = useState({ lat: '40.7128', lon: '-74.0060' });
   const [results, setResults] = useState(null);
   const [city, setCity] = useState('New York');
+  const [address, setAddress] = useState('')
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -39,26 +40,27 @@ const CurrentCityWeather = () => {
 
   }
 
-  function showError(error){
-    switch(error.code){
-        case error.PERMISSION_DENIED:
-          alert("User denied the request for Geolocation.")
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert("Location information is unavailable.")
-          break;
-        case error.TIMEOUT:
-          alert("The request to get user location timed out.")
-          break;
-        default:
-          alert("An unknown error occurred.")
-          break;
+  function showError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("User denied the request for Geolocation.")
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("Location information is unavailable.")
+        break;
+      case error.TIMEOUT:
+        alert("The request to get user location timed out.")
+        break;
+      default:
+        alert("An unknown error occurred.")
+        break;
     }
   }
 
   useEffect(() => {
     getLocation()
-  
+  })
+
   const {
     transcript,
     listening,
@@ -110,8 +112,18 @@ const CurrentCityWeather = () => {
 
 
   useEffect(() => {
-    console.log(transcript)
-    setCity(transcript)
+    if (transcript !== '') {
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transcript}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
+        .then(response => response.json())
+        .then(data => {
+          var latitude = data.results[0].geometry.location.lat;
+          var longitude = data.results[0].geometry.location.lng;
+          var coordinates = { lat: latitude, lon: longitude };
+          setAddress(data.results[0].formatted_address)
+          setCityCoordinates(coordinates);
+        })
+        .catch(error => alert(error))
+    }
   }, [transcript])
 
   function handleMicrophone() {
@@ -131,18 +143,18 @@ const CurrentCityWeather = () => {
           <Autocomplete
             apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
             onPlaceSelected={(place) => {
-            setCoordinates(place);
-            getCity(place.formatted_address);
-          }}
-          defaultValue={"New York, NY, USA"}
-          className="inputCity"
+              setCoordinates(place);
+              getCity(place.formatted_address);
+            }}
+            defaultValue={"New York, NY, USA"}
+            className="inputCity"
           />
           {browserSupportsSpeechRecognition ? (
             <div className='voice-ctn'>
               <div
                 className='microphone-icon'
                 onClick={handleMicrophone}>{listening ? (<FontAwesomeIcon icon={faMicrophone} />) : (<FontAwesomeIcon icon={faMicrophoneSlash} />)}</div>
-            </div>):(<div></div>)}
+            </div>) : (<div></div>)}
         </div>
         {error && (
           <div className="WeatherResultsLoading">

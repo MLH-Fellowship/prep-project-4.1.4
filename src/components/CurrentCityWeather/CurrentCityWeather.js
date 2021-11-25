@@ -6,6 +6,7 @@ import { Col, Row } from "react-bootstrap";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
+import HourlyCityWeather from "../HourlyCityWeather/HourlyCityWeather";
 import SongRecommendation from "../SongRecommendation/SongRecommendation";
 
 const CurrentCityWeather = () => {
@@ -228,6 +229,9 @@ const CurrentCityWeather = () => {
                     </Row>
                   </Col>
                 </Row>
+              <Row>
+                <HourlyCityWeather city={city} />
+              </Row>
               </div>
             </div>
             <SongRecommendation options={results} />

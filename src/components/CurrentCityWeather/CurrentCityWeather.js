@@ -4,6 +4,7 @@ import Autocomplete from "react-google-autocomplete";
 import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
 import WMap from "../../components/Map/Map";
+import HourlyCityWeather from "../HourlyCityWeather/HourlyCityWeather";
 import SongRecommendation from "../SongRecommendation/SongRecommendation";
 
 const CurrentCityWeather = () => {
@@ -175,8 +176,11 @@ const CurrentCityWeather = () => {
                     </Col>
                   </Row>
                 </Col>
+               </Row>
+              <Row>
+                <HourlyCityWeather city={city} />
               </Row>
-            </div>
+              </div>
             <WMap city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}/>
           </div>
           <div>

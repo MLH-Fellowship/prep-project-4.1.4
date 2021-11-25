@@ -29,15 +29,15 @@
 }
 
 .songs-container {
-    padding-left: 8%;
-    padding-right: 8%;
+    padding-left: 12%;
+    padding-right: 12%;
 }
 
 .song-card {
     padding-left: 0%;
     padding-right: 0%;
     padding-top: 0px;
-    padding-bottom: 100px;
+    padding-bottom: 120px;
 }
 
 .song-title {

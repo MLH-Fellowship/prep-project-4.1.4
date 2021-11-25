@@ -10,7 +10,6 @@ const SongRecommendation = (props) => {
     var accessToken = '';
     var playlistId = '';
 
-    console.log('tracksData: ' + tracksData);
     playlistId = {
         Clear: "2Ub0SnonpnLgiWP9LQs5kO",
         Clouds: "3QrZOF8JmVADH0jl2DZv8r",
@@ -28,7 +27,6 @@ const SongRecommendation = (props) => {
             .then((result) => result.json()).then((response) => {
 
                 var items = response.items;
-                console.log(items);
                 setTracks(items);
             }
             )
@@ -52,7 +50,6 @@ const SongRecommendation = (props) => {
             tracksRows.push(tracks.slice(i, i + 5));
         }
         setTracksData(tracksRows);
-        console.log('tracksRows: ' + tracksRows);
     }
 
 
@@ -69,8 +66,6 @@ const SongRecommendation = (props) => {
                 body: 'grant_type=client_credentials'
             }).then((result) => result.json()).then((data) => {
                 accessToken = data.access_token;
-                console.log('Access token: ' + accessToken);
-
                 handleGetPlaylists();
             }
             ).catch((error) => { console.error(error); });

@@ -50,10 +50,10 @@ const PlaceMarker = ({
 
 const WMap = ({city, setCity, cityCoordinates, setCityCoordinates}) => {
   const [map, setMap] = useState();
-  const [position, setPosition] = useState({Lat: "", Long: "", zoom: 6, City: ""});
+  const [position, setPosition] = useState({Lat: "", Long: "", zoom: 7, City: ""});
 
   useEffect(() => {
-    setPosition({Lat: cityCoordinates.lat, Long: cityCoordinates.lon, zoom: 6, City: city})
+    setPosition({Lat: cityCoordinates.lat, Long: cityCoordinates.lon, zoom: 7, City: city})
   }, [cityCoordinates, city]);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const WMap = ({city, setCity, cityCoordinates, setCityCoordinates}) => {
     <>
       <div>
         <MapContainer className="map" whenCreated={setMap} center={[position.Lat, position.Long]} doubleClickZoom={true}
-      scrollWheelZoom={true} zoom={6} maxZoom={9}>
+      scrollWheelZoom={true} zoom={7} maxZoom={7}>
           <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
           <PlaceMarker city={city} setCity={setCity} cityCoordinates={cityCoordinates} setCityCoordinates={setCityCoordinates} map={map} setMap={setMap}/>
         </ MapContainer >

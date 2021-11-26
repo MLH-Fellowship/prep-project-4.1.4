@@ -65,13 +65,13 @@ const SongRecommendation = (props) => {
         <>
             <div className="Recommended Songs">
                 <h2 className="Catchy Header">Listen Songs That Match Your Mood!</h2>
-                <ListGroup>
+                <ListGroup >
                     {tracksData &&
                         tracksData.map((singleTrack) =>
-                            <ListGroupItem>
-                                <Row>
+                            <ListGroupItem >
+                                <Row  className="dp">
                                     <img src={singleTrack.imageUrl} alt='Cover Page of Song' className="songImage" />
-                                    <Col>
+                                    <Col >
                                         <h4>{singleTrack.song}</h4>
                                         <h5>{singleTrack.artist}</h5>
                                     </Col>

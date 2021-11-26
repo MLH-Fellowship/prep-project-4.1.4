@@ -1,7 +1,11 @@
 body {
   color: white;
   text-align: center;
-  background-color: #3f78c9;
+  background-image: url("./assets/images/backgrounds/pink.jpg");
+  
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
 }
 
 input {
@@ -91,6 +95,6 @@ input {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
 
-  width: 200px;
+  
 
 }

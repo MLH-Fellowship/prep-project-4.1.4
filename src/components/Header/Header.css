@@ -1,7 +1,11 @@
 .MLHHeader {
   padding: 20px;
   border-bottom: 2px solid #888;
-  background-color: #133667;
+  background-image: url("../../assets/images/backgrounds/best.jpg");
+  
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
 }
 .logo {
   margin: 0 auto;

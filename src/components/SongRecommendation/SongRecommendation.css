@@ -2,3 +2,11 @@
     height: 100px;
     width: 100px;
 }
+.dp
+{
+    background-image: url("../../assets/images/backgrounds/pink.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
+    opacity: 0.9;
+}

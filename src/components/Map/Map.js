@@ -50,10 +50,10 @@ const PlaceMarker = ({
 
 const WMap = ({city, setCity, cityCoordinates, setCityCoordinates}) => {
   const [map, setMap] = useState();
-  const [position, setPosition] = useState({Lat: "", Long: "", zoom: 7, City: ""});
+  const [position, setPosition] = useState({Lat: "", Long: "", City: ""});
 
   useEffect(() => {
-    setPosition({Lat: cityCoordinates.lat, Long: cityCoordinates.lon, zoom: 7, City: city})
+    setPosition({Lat: cityCoordinates.lat, Long: cityCoordinates.lon, City: city})
   }, [cityCoordinates, city]);
 
   useEffect(() => {
@@ -63,16 +63,18 @@ const WMap = ({city, setCity, cityCoordinates, setCityCoordinates}) => {
   useEffect(() => {
     const mapCenter = [position.Lat, position.Long];
     if (map) {
-      map.setView(mapCenter, position.zoom);
-    }
+      if (map.getZoom() < 4) {
+        map.setView(mapCenter, 7);
+      }
+      else {map.setView(mapCenter, map.getZoom());}
+    };
   }, [map, position]);
 
-  const mapCenter = [position.Lat, position.Long];
   return (
     <>
       <div>
         <MapContainer className="map" whenCreated={setMap} center={[position.Lat, position.Long]} doubleClickZoom={true}
-      scrollWheelZoom={true} zoom={7} maxZoom={7}>
+      scrollWheelZoom={true} zoom={7}>
           <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
           <PlaceMarker city={city} setCity={setCity} cityCoordinates={cityCoordinates} setCityCoordinates={setCityCoordinates} map={map} setMap={setMap}/>
         </ MapContainer >

@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 import HourlyCityWeather from "../HourlyCityWeather/HourlyCityWeather";
 import SongRecommendation from "../SongRecommendation/SongRecommendation";
+import "react-toggle/style.css"
+import Toggle from 'react-toggle'
 
 const CurrentCityWeather = () => {
 
@@ -17,6 +19,7 @@ const CurrentCityWeather = () => {
   const [results, setResults] = useState(null);
   const [city, setCity] = useState('New York');
   const [address, setAddress] = useState('')
+  const [unit, setUnit] = useState('metric')
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -74,7 +77,7 @@ const CurrentCityWeather = () => {
       cityCoordinates.lat +
       "&lon=" +
       cityCoordinates.lon +
-      "&units=metric" +
+      `&units=${unit}` +
       "&appid=" +
       process.env.REACT_APP_APIKEY
     )
@@ -97,7 +100,7 @@ const CurrentCityWeather = () => {
       .catch((err) => {
         setError(err);
       });
-  }, [cityCoordinates]);
+  }, [cityCoordinates, unit]);
 
   function setCoordinates(place) {
     var latitude = place.geometry.location.lat();
@@ -143,8 +146,29 @@ const CurrentCityWeather = () => {
     }
   }
 
+  function handleUnitChange() {
+    if (unit === 'metric') {
+      setUnit('imperial')
+    } else {
+      setUnit('metric')
+    }
+    console.log(unit)
+  }
+
+
+
   return (
     <>
+      <div className="toggle-ctn">
+        <Toggle
+          defaultChecked={true}
+          className='toggle-switch'
+          icons={{
+            checked: <div className='unit-symbol'>C</div>,
+            unchecked: <div className='unit-symbol'>F</div>,
+          }}
+          onChange={handleUnitChange} />
+      </div>
       <div className="CurrentCityWeather">
         <h2 className="pb-4">Enter a city below 👇</h2>
         <div className='input-ctn'>
@@ -185,7 +209,9 @@ const CurrentCityWeather = () => {
                   <Col className="col-md-5 col-12">
                     <div className="CurrentActualTemp">
                       {results.main.temp}
-                      <sup>°C</sup>
+                      {unit === "metric" ? (
+                        <sup>°C</sup>) : (<sup>°F</sup>)
+                      }
                     </div>
                     <div className="CurrentActualWeather">
                       {results.weather[0].main}
@@ -201,7 +227,9 @@ const CurrentCityWeather = () => {
                       <Col className="pb-1 pt-2">
                         <div className="currentTempDetails">
                           <span> Feels like: </span> {results.main.feels_like}
-                          <sup>°C</sup>
+                          {unit === "metric" ? (
+                            <sup>°C</sup>) : (<sup>°F</sup>)
+                          }
                         </div>
                       </Col>
                       <Col className="pb-2">
@@ -215,13 +243,17 @@ const CurrentCityWeather = () => {
                           <Col>
                             <div className="minmaxTempHeading">MIN</div>
                             <div className="minmaxTemp">
-                              {results.main.temp_min} <sup>°C</sup>
+                              {results.main.temp_min}{unit === "metric" ? (
+                                <sup>°C</sup>) : (<sup>°F</sup>)
+                              }
                             </div>
                           </Col>
                           <Col>
                             <div className="minmaxTempHeading">MAX</div>
                             <div className="minmaxTemp">
-                              {results.main.temp_max} <sup>°C</sup>
+                              {results.main.temp_max} {unit === "metric" ? (
+                                <sup>°C</sup>) : (<sup>°F</sup>)
+                              }
                             </div>
                           </Col>
                         </Row>
@@ -229,9 +261,9 @@ const CurrentCityWeather = () => {
                     </Row>
                   </Col>
                 </Row>
-              <Row>
-                <HourlyCityWeather city={city} />
-              </Row>
+                <Row>
+                  <HourlyCityWeather city={city} unit={unit} />
+                </Row>
               </div>
             </div>
             <SongRecommendation options={results} />

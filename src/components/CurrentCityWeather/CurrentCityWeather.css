@@ -1,5 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+.toggle-ctn {
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+  position: absolute;
+  top: 12%;
+  right: 8%;
+}
+
+.unit-symbol {
+  position: relative;
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 4.5px;
+}
+
+.react-toggle-track {
+  height: 35px !important;
+  width: 60px !important;
+}
+
+.react-toggle-thumb {
+  width: 33px !important;
+  height: 33px !important;
+}
+
 .CurrentCityWeather {
   margin-top: 20px;
 }

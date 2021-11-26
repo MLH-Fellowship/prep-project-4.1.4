@@ -1,0 +1,10 @@
+#dust-background {
+    min-height: 100vh;
+    background-image: url("../../../assets/images/backgrounds/Smoke.jpg");
+    background-repeat: no-repeat;
+    background-color: #cccccc;
+    background-size: cover;
+    overflow: hidden;
+    background-attachment: fixed !important;
+    padding-bottom: 0;
+  }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import "../../App.css";
 import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
-import Background from "../../data/BackGroundAccordingToWeather";
+import Background from "../Background";
 import { Col, Row } from "react-bootstrap";
 import SongRecommendation from "../SongRecommendation/SongRecommendation";
+import Header from "../../components/Header/Header";
 
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
@@ -101,17 +103,6 @@ const CurrentCityWeather = () => {
 
   return (
     <>
-      <div className="CurrentCityWeather">
-        <h2 className="pb-4">Enter a city below 👇</h2>
-        <Autocomplete
-          apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-          onPlaceSelected={(place) => {
-            setCoordinates(place);
-            getCity(place.formatted_address);
-          }}
-          defaultValue={"New York, NY, USA"}
-          className="inputCity"
-        />
         {error && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Error: {error.message}</h2>
@@ -124,8 +115,19 @@ const CurrentCityWeather = () => {
         )}
         {isLoaded && !error && results && (
           <>
+          <Background results={results}>
+          <div className= "flex flex-col h-full items-center body CurrentCityWeather">
+            <h2 className="pb-4">Enter a city below 👇</h2>
+            <Autocomplete
+              apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+              onPlaceSelected={(place) => {
+                setCoordinates(place);
+                getCity(place.formatted_address);
+              }}
+              defaultValue={"New York, NY, USA"}
+              className="inputCity"
+            />
             <div
-              style={Background[results.weather[0].main]}
               className="WeatherResults"
             >
               <div className="InnerWeatherResults">
@@ -140,7 +142,7 @@ const CurrentCityWeather = () => {
                     </div>
                     <i>
                       <div>
-                        {city}, {results.sys.country}
+                        {results.name}, {results.sys.country}
                       </div>
                     </i>
                   </Col>
@@ -179,10 +181,10 @@ const CurrentCityWeather = () => {
                 </Row>
               </div>
             </div>
-            <SongRecommendation options={results} />
+          </div>
+          </Background>
           </>
         )}
-      </div>
     </>
   );
 

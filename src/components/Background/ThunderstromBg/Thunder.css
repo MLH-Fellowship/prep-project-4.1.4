@@ -1,0 +1,24 @@
+
+.thunderstorm {
+  min-height: 100vh;
+  background-image: url(https://static.pexels.com/photos/29550/pexels-photo-29550-medium.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: sliderThunder 20s linear infinite;
+  overflow: hidden;
+}
+
+keyframes sliderThunder {
+  0% {
+    background-image: url(https://static.pexels.com/photos/9466/pexels-photo-medium.jpg);
+  }
+  33% {
+    background-image: url(https://static.pexels.com/photos/29550/pexels-photo-29550-medium.jpg);
+  }
+  66% {
+    background-image: url(https://static.pexels.com/photos/799/city-lights-night-clouds-medium.jpg);
+  }
+  100% {
+    background-image: url(https://static.pexels.com/photos/9466/pexels-photo-medium.jpg);
+  }
+}

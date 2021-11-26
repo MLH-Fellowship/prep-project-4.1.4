@@ -204,21 +204,6 @@ const CurrentCityWeather = () => {
               style={Background[results.weather[0].main]}
               className="WeatherResults"
             >
-              <div className="InnerWeatherResults">
-                <Row className="justify-content-center">
-                  <Col className="col-md-5 col-12">
-                    <div className="CurrentActualTemp">
-                      {results.main.temp}
-                      {unit === "metric" ? (
-                        <sup>°C</sup>) : (<sup>°F</sup>)
-                      }
-                    </div>
-                    <div className="CurrentActualWeather">
-                      {results.weather[0].main}
-          <div
-            style={Background[results.weather[0].main]}
-            className="WeatherResults"
-          >
             <div className="InnerWeatherResults">
               <Row className="justify-content-center">
                 <Col className="col-md-5 col-12">

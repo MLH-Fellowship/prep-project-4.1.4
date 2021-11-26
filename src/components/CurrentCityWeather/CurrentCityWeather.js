@@ -135,11 +135,7 @@ const CurrentCityWeather = () => {
   }
 
   async function checkBraveBrowser() {
-    if (navigator.brave && await navigator.brave.isBrave()) {
-      return false
-    } else {
-      return true
-    }
+    return navigator.brave && await navigator.brave.isBrave();
   }
 
   return (

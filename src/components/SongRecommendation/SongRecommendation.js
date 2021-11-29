@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { Col, ListGroupItem, Row } from "react-bootstrap";
-import ListGroup from 'react-bootstrap/ListGroup';
+import { Col, Row } from "react-bootstrap";
 import "./SongRecommendation.css";
 
 const SongRecommendation = (props) => {
 
+    const [tracksData, setTracksData] = useState(null);
     const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/playlists/";
     const ACCESS_TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
     var accessToken = '';
     var playlistId = '';
-    const [tracksData, setTracksData] = useState(null);
+
     playlistId = {
         Clear: "2Ub0SnonpnLgiWP9LQs5kO",
         Clouds: "3QrZOF8JmVADH0jl2DZv8r",
@@ -27,17 +27,31 @@ const SongRecommendation = (props) => {
             .then((result) => result.json()).then((response) => {
 
                 var items = response.items;
-                setTracksData(
-                    items.map(({ track }) => ({
-                        song: track.name,
-                        artist: track.artists[0].name,
-                        imageUrl: track.album.images[0].url
-                    }))
-                )
+                setTracks(items);
             }
             )
             .catch(console.error);
     };
+
+    function setTracks(items) {
+        const tracks = items.map(({ track }) => ({
+            song: track.name,
+            artist: track.artists[0].name,
+            imageUrl: track.album.images[0].url,
+            spotifyUrl: track.external_urls.spotify
+        }))
+        organizeInRows(tracks);
+
+    }
+
+    function organizeInRows(tracks) {
+        const tracksRows = [];
+        for (var i = 0; i < tracks.length; i += 5) {
+            tracksRows.push(tracks.slice(i, i + 5));
+        }
+        setTracksData(tracksRows);
+    }
+
 
 
     useEffect(() => {
@@ -52,38 +66,41 @@ const SongRecommendation = (props) => {
                 body: 'grant_type=client_credentials'
             }).then((result) => result.json()).then((data) => {
                 accessToken = data.access_token;
-
                 handleGetPlaylists();
             }
             ).catch((error) => { console.error(error); });
 
         }
         _getToken()
-    }, [tracksData]);
+    }, [props]);
 
     return (
-        <>
-            <div className="Recommended Songs">
-                <h2 className="Catchy Header">Listen Songs That Match Your Mood!</h2>
-                <ListGroup>
-                    {tracksData &&
-                        tracksData.map((singleTrack) =>
-                            <ListGroupItem>
-                                <Row>
-                                    <img src={singleTrack.imageUrl} alt='Cover Page of Song' className="songImage" />
-                                    <Col>
-                                        <h4>{singleTrack.song}</h4>
-                                        <h5>{singleTrack.artist}</h5>
-                                    </Col>
-                                </Row>
-                            </ListGroupItem>
-                        )
-                    }
-                </ListGroup>
+        <div className="Recommended Songs">
+            <h2 className="Catchy Header">Songs based on the forecast</h2>
 
+            <div className="songs-container">
+                {tracksData &&
+                    tracksData.map((singleRow, i) => (
+                        <Row className="songs-row" key={i}>
+                            {singleRow.map((singleTrack, j) => (
+                                <Col fluid="true" className="song-card" key={j}>
+                                    <div className="card">
+                                        <div className="overlayer">
+                                        </div>
+                                        <a target="_blank" href={singleTrack.spotifyUrl}>
+                                            <img className="song-image" src={singleTrack.imageUrl} alt='Cover Page of Song' />
+                                        </a>
+                                        <div>
+                                            <h6 className="song-title">{singleTrack.song}</h6>
+                                            <h6 className="song-artist">{singleTrack.artist}</h6>
+                                        </div>
+                                    </div>
+                                </Col>
+                            ))}
+                        </Row>
+                    ))}
             </div>
-
-        </>
+        </div>
     );
 };
 

@@ -1,40 +1,43 @@
 import { useEffect, useState } from "react";
 import "../../App.css";
+import { useEffect, useState, useRef  } from "react";
 import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
 import Background from "../Background";
 import { Col, Row } from "react-bootstrap";
+import WMap from "../../components/Map/Map";
+import HourlyCityWeather from "../HourlyCityWeather/HourlyCityWeather";
 import SongRecommendation from "../SongRecommendation/SongRecommendation";
 import Header from "../../components/Header/Header";
 
 const CurrentCityWeather = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [cityCoordinates, setCityCoordinates] = useState({ lat: '40.7128', lon: '-74.0060' });
+  const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
   const [results, setResults] = useState(null);
   const [city, setCity] = useState('New York');
 
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
+  function getLocation(){
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(showPosition,showError);
     }
-    else {
+    else{
       alert("Geolocation is not supported by this browser.");
     }
   }
 
-  function showPosition(position) {
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
-
+  function showPosition(position){
+    const lat=position.coords.latitude;
+    const lon=position.coords.longitude;
     fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
-      .then(response => response.json())
-      .then(data => {
-        var currCity = data.city ? data.city : data.principalSubdivision
-        setCity(currCity)
-      })
-      .catch(error => alert(error))
-
+    .then(response => response.json())
+    .then(data => {
+      var currCity = data.city ? data.city : data.principalSubdivision
+      setCity(currCity);
+      var coordinates = {lat: lat, lon: lon};
+      setCityCoordinates(coordinates);
+    })
+    .catch(error => alert(error))
   }
 
   function showError(error){
@@ -48,7 +51,7 @@ const CurrentCityWeather = () => {
         case error.TIMEOUT:
           alert("The request to get user location timed out.")
           break;
-        default:
+        case error.UNKNOWN_ERROR:
           alert("An unknown error occurred.")
           break;
     }
@@ -56,21 +59,20 @@ const CurrentCityWeather = () => {
 
   useEffect(() => {
     getLocation()
-  })
+  }, [])
 
   useEffect(() => {
     fetch(
-      "https://api.openweathermap.org/data/2.5/weather?lat=" +
-      cityCoordinates.lat +
-      "&lon=" +
-      cityCoordinates.lon +
-      "&units=metric" +
-      "&appid=" +
-      process.env.REACT_APP_APIKEY
+      "https://api.openweathermap.org/data/2.5/weather?"
+      + `lat=${cityCoordinates.lat}&`
+      + `lon=${cityCoordinates.lon}&`
+      + "units=metric&"
+      + `appid=${process.env.REACT_APP_APIKEY}`
     )
       .then((res) => res.json())
       .then(
         (result) => {
+          console.log(result);
           if (result["cod"] !== 200) {
             setIsLoaded(true);
             setError(result);
@@ -78,6 +80,7 @@ const CurrentCityWeather = () => {
             setIsLoaded(true);
             setError();
             setResults(result);
+            setCity(result.name + ", " + result.sys.country)
           }
         },
         (error) => {
@@ -90,14 +93,14 @@ const CurrentCityWeather = () => {
   }, [cityCoordinates]);
 
   function setCoordinates(place) {
-    var latitude = place.geometry.location.lat();
-    var longitude = place.geometry.location.lng();
-    var coordinates = { lat: latitude, lon: longitude };
+    const latitude = place.geometry.location.lat();
+    const longitude = place.geometry.location.lng();
+    const coordinates = {lat: latitude, lon: longitude};
     setCityCoordinates(coordinates);
   }
 
   function getCity(address) {
-    var addressComponents = address.split(",");
+    const addressComponents = address.split(",");
     setCity(addressComponents[0]);
   }
 
@@ -143,7 +146,7 @@ const CurrentCityWeather = () => {
                     <i>
                       <div>
                         {results.name}, {results.sys.country}
-                      </div>
+                       </div>
                     </i>
                   </Col>
                   <Col className="col-md-7 col-10">
@@ -178,9 +181,16 @@ const CurrentCityWeather = () => {
                       </Col>
                     </Row>
                   </Col>
+                 </Row>
+                <Row>
+                  <HourlyCityWeather city={city} />
                 </Row>
-              </div>
+               </div>
             </div>
+            <WMap city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}/>
+          </div>
+          <div>
+            <SongRecommendation options={results} />
           </div>
           </Background>
           </>

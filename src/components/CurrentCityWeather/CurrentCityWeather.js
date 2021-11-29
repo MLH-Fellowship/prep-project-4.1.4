@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "../../App.css";
-import { useEffect, useState, useRef  } from "react";
 import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
 import Background from "../Background";

@@ -29,11 +29,13 @@ const CurrentCityWeather = () => {
     fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
     .then(response => response.json())
     .then(data => {
-      const currCity = data.city ? data.city : data.principalSubdivision
-      setCity(currCity)
-      setCityCoordinates({lat: lat,lon: lon});
+      var currCity = data.city ? data.city : data.principalSubdivision
+      setCity(currCity);
+      var coordinates = {lat: lat, lon: lon};
+      setCityCoordinates(coordinates);
     })
-    .catch(error => alert(error))}
+    .catch(error => alert(error))
+  }
 
   function showError(error){
     switch(error.code){

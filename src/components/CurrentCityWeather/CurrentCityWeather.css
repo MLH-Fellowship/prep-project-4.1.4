@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 .CurrentCityWeather {
   margin-top: 20px;
@@ -11,6 +11,12 @@
   margin: 30px auto;
   border-radius: 8px;
 }
+
+.input-ctn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .inputCity {
   width: 300px;
   text-align: center;
@@ -19,6 +25,17 @@
   /* outline: none; */
   outline: 2px solid #133667;
 }
+
+.microphone-icon {
+  margin-left: 15px;
+  width: 50px;
+  height: 50px;
+  font-size: 31px;
+  background-color: white;
+  border-radius: 50%;
+  color: #133667;
+}
+
 .WeatherResults {
   width: 600px;
   margin: 30px auto;
@@ -46,11 +63,11 @@
   font-size: 2rem;
   color: #133667;
   font-weight: 500;
-  font-family: "Roboto Slab", serif;
+  font-family: 'Roboto Slab', serif;
 }
 .minmaxTempHeading {
   font-size: 1.2rem;
-  font-family: "Roboto Slab", serif;
+  font-family: 'Roboto Slab', serif;
   font-weight: 300;
   padding-right: 10px;
 }
@@ -65,7 +82,7 @@
 .currentTempDetails {
   font-size: 1.1rem;
   text-align: center;
-  font-family: "Roboto Slab", serif;
+  font-family: 'Roboto Slab', serif;
 }
 .currentTempDetails span {
   font-weight: 500;
@@ -111,5 +128,4 @@
   .InnerWeatherResults {
     padding: 10px 0px;
   }
-
 }

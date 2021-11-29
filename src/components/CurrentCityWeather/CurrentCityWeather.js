@@ -3,16 +3,21 @@ import "./CurrentCityWeather.css";
 import Autocomplete from "react-google-autocomplete";
 import Background from "../../data/BackGroundAccordingToWeather";
 import { Col, Row } from "react-bootstrap";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 import WMap from "../../components/Map/Map";
 import HourlyCityWeather from "../HourlyCityWeather/HourlyCityWeather";
 import SongRecommendation from "../SongRecommendation/SongRecommendation";
 
 const CurrentCityWeather = () => {
+
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [cityCoordinates, setCityCoordinates] = useState({lat: '40.7128', lon: '-74.0060'});
   const [results, setResults] = useState(null);
   const [city, setCity] = useState('New York');
+  const [address, setAddress] = useState('')
 
   function getLocation(){
     if (navigator.geolocation){
@@ -37,26 +42,32 @@ const CurrentCityWeather = () => {
     .catch(error => alert(error))
   }
 
-  function showError(error){
-    switch(error.code){
-        case error.PERMISSION_DENIED:
-          alert("User denied the request for Geolocation.")
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert("Location information is unavailable.")
-          break;
-        case error.TIMEOUT:
-          alert("The request to get user location timed out.")
-          break;
-        case error.UNKNOWN_ERROR:
-          alert("An unknown error occurred.")
-          break;
+  function showError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("User denied the request for Geolocation.")
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("Location information is unavailable.")
+        break;
+      case error.TIMEOUT:
+        alert("The request to get user location timed out.")
+        break;
+      default:
+        alert("An unknown error occurred.")
+        break;
     }
   }
 
   useEffect(() => {
     getLocation()
   }, [])
+
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
 
   useEffect(() => {
     fetch(
@@ -101,11 +112,40 @@ const CurrentCityWeather = () => {
     setCity(addressComponents[0]);
   }
 
+
+  useEffect(() => {
+    if (transcript !== '') {
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transcript}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
+        .then(response => response.json())
+        .then(data => {
+          var latitude = data.results[0].geometry.location.lat;
+          var longitude = data.results[0].geometry.location.lng;
+          var coordinates = { lat: latitude, lon: longitude };
+          setAddress(data.results[0].formatted_address)
+          setCityCoordinates(coordinates);
+        })
+        .catch(error => alert(error))
+    }
+  }, [transcript])
+
+  function handleMicrophone() {
+    if (listening) {
+      SpeechRecognition.stopListening()
+    } else {
+      SpeechRecognition.startListening()
+    }
+  }
+
+  async function checkBraveBrowser() {
+    return navigator.brave && await navigator.brave.isBrave();
+  }
+
   return (
     <>
       <div className="CurrentCityWeather">
         <h2 className="pb-4">Enter a city below 👇</h2>
-        <Autocomplete
+        <div className='input-ctn'>
+           <Autocomplete
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
           onPlaceSelected={(place) => {
             setCoordinates(place);
@@ -114,6 +154,13 @@ const CurrentCityWeather = () => {
           defaultValue={city}
           className="inputCity"
         />
+          {browserSupportsSpeechRecognition && checkBraveBrowser ? (
+            <div className='voice-ctn'>
+              <div
+                className='microphone-icon'
+                onClick={handleMicrophone}>{listening ? (<FontAwesomeIcon icon={faMicrophone} />) : (<FontAwesomeIcon icon={faMicrophoneSlash} />)}</div>
+            </div>) : (<div></div>)}
+        </div>
         {error && (
           <div className="WeatherResultsLoading">
             <h2 className="px-3">Error: {error.message}</h2>

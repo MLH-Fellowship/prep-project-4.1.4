@@ -185,8 +185,8 @@ const CurrentCityWeather = () => {
                   <HourlyCityWeather city={city} />
                 </Row>
                </div>
+               <WMap city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}/>
             </div>
-            <WMap city = {city} setCity = {setCity} cityCoordinates = {cityCoordinates} setCityCoordinates= {setCityCoordinates}/>
           </div>
           <div>
             <SongRecommendation options={results} />

@@ -8,44 +8,39 @@ import Drizzle from "../assets/images/backgrounds/drizzle.jpg";
 const Background = {
   Clouds: {
     background: `url(${Clouds})`,
-    backgroundPositionX: "center",
-    backgroundPositionY: "bottom",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    overflow: "hidden",
+    backgroundAttachment: "fixed"
   },
   Smoke: {
     background: `url(${Smoke})`,
-    backgroundPositionX: "center",
-    backgroundPositionY: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    overflow: "hidden",
+    backgroundAttachment: "fixed !important"
   },
   Clear: {
     background: `url(${Clear})`,
-    backgroundPositionX: "center",
-    backgroundPositionY: "bottom",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    overflow: "hidden",
+    backgroundAttachment: "fixed"
   },
   Rain: {
     background: `url(${Rain})`,
-    backgroundPositionX: "center",
-    backgroundPositionY: "center",
-    backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
   },
   Haze: {
     background: `url(${Haze})`,
-    backgroundPositionX: "center",
-    backgroundPositionY: "center",
-    backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
   },
   Drizzle: {
     background: `url(${Drizzle})`,
-    backgroundPositionX: "center",
-    backgroundPositionY: "top",
-    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+  },
+  Mist: {
+    background: `url(${Haze})`,
     backgroundSize: "cover",
   },
 };

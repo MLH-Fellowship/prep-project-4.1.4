@@ -1,0 +1,39 @@
+#clearsky {
+  background: #2980b9; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #2980b9,
+    #6dd5fa,
+    #ffffff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #2980b9,
+    #6dd5fa,
+    #ffffff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+#sunny {
+  min-height: 100vh;
+  background: #f2994a; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f2c94c,
+    #f2994a
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f2c94c,
+    #f2994a
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+.sky-img {
+  min-height: 100vh;
+  background: url("../../../assets/images/backgrounds/Clear.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: marquee 60s linear infinite;
+  overflow: hidden;
+}
